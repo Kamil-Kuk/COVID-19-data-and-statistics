@@ -11,5 +11,6 @@ public class Main {
 
         List<CsvBeanOWID> result = csvRead.getBeanFromCSV();
         result.forEach(System.out :: println);
+        System.out.println(result.get(0));
     }
 }

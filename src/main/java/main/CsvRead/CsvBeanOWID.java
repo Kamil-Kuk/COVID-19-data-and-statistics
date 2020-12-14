@@ -1,48 +1,33 @@
 package main.CsvRead;
 
 import com.opencsv.bean.CsvBindByName;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 
 @NoArgsConstructor
-public class CsvBeanOWID extends CsvBean{
+public class CsvBeanOWID implements CsvBean{
 
-    private final String fileName = "src/main/resources/csv/owid-covid-data.csv";
-    private final Path myPath = Paths.get(fileName);
+    private final String FILE_NAME = "src/main/resources/csv/owid-covid-data.csv";
+    private final Path MY_PATH = Paths.get(FILE_NAME);
 
     @Override
-    public Path getMyPath() {
-        return myPath;
+    public Path getMY_PATH() {
+        return MY_PATH;
     }
 
     @CsvBindByName
-    private String ISO_Code;
-
-    @CsvBindByName
-    private String Continent;
-
-    @CsvBindByName
-    private String Location;
-
-    @CsvBindByName
-    private String Date;
-
-    @CsvBindByName
-    private String Total_Cases;
-
-//    @CsvBindByName
-//    private String Total_Cases_Per_Million;
-//
-//    @CsvBindByName
-//    private String Total_Cases_Per_Million;
-//
-//    @CsvBindByName
-//    private String Total_Cases_Per_Million;
+    private String  ISO_Code,
+                    Continent,
+                    Location,
+                    Date,
+                    Total_Cases;
 
     public String getISO_Code() {
         return ISO_Code;
@@ -90,13 +75,32 @@ public class CsvBeanOWID extends CsvBean{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CsvBeanOWID that = (CsvBeanOWID) o;
+        return Objects.equals(getISO_Code(), that.getISO_Code()) &&
+                Objects.equals(getContinent(), that.getContinent()) &&
+                Objects.equals(getLocation(), that.getLocation()) &&
+                Objects.equals(getDate(), that.getDate()) &&
+                Objects.equals(getTotal_Cases(), that.getTotal_Cases());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getISO_Code(), getContinent(), getLocation(), getDate(), getTotal_Cases());
+    }
+
+    @Override
     public String toString() {
         return "CsvBeanOWID{" +
                 "ISO_Code='" + ISO_Code + '\'' +
                 ", Continent='" + Continent + '\'' +
                 ", Location='" + Location + '\'' +
                 ", Date='" + getDate() + '\'' +
-                ", Total_Cases=" + getTotal_Cases() +
-                "} ";
+                ", Total_Cases='" + getTotal_Cases() + '\'' +
+                '}';
+
+
     }
 }

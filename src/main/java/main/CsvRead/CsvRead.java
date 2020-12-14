@@ -20,7 +20,7 @@ public class CsvRead {
     }
 
     public List<CsvBeanOWID> getBeanFromCSV() {
-        try (BufferedReader br = Files.newBufferedReader(csvBean.getMyPath(), StandardCharsets.UTF_8)) {
+        try (BufferedReader br = Files.newBufferedReader(csvBean.getMY_PATH(), StandardCharsets.UTF_8)) {
             HeaderColumnNameMappingStrategy<CsvBeanOWID> strategy = new HeaderColumnNameMappingStrategy<>();
             strategy.setType(CsvBeanOWID.class);
 

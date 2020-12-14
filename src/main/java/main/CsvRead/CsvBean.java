@@ -2,10 +2,7 @@ package main.CsvRead;
 
 import java.nio.file.Path;
 
-public abstract class CsvBean {
-    private Path myPath;
+public interface CsvBean {
 
-    public Path getMyPath() {
-        return myPath;
-    }
+    public Path getMY_PATH();
 }
