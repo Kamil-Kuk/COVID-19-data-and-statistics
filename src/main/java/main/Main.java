@@ -1,5 +1,6 @@
 package main;
 
+import main.CsvRead.CsvBean;
 import main.CsvRead.CsvBeanOWID;
 import main.CsvRead.CsvRead;
 import java.util.List;
@@ -9,8 +10,8 @@ public class Main {
         CsvBeanOWID bean = new CsvBeanOWID();
         CsvRead csvRead = new CsvRead(bean);
 
-        List<CsvBeanOWID> result = csvRead.getBeanFromCSV();
-        result.forEach(System.out :: println);
-        System.out.println(result.get(0));
+        List<CsvBean> result = csvRead.getBeanFromCSV();
+        //result.forEach(System.out :: println);
+        System.out.println(result.get(result.size()-1));
     }
 }
