@@ -3,7 +3,6 @@ package main.CsvRead;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CsvReadTest {
 
@@ -27,24 +26,19 @@ class CsvReadTest {
         CsvBeanOWID testBean = new CsvBeanOWID();
 
         //when
-        testBean.setISO_Code("AFG");
+        testBean.setISO_code("AFG");
         testBean.setContinent("Asia");
         testBean.setLocation("Afghanistan");
         testBean.setDate("2020-01-23");
-        testBean.setTotal_Cases("");
-        testBean.setNew_Cases("0.0");
-        testBean.setTotal_Deaths("");
-        testBean.setNew_Deaths("0.0");
-        testBean.setTotal_Cases_Per_Million("");
-        testBean.setNew_Cases_Per_Million("0.0");
-        testBean.setTotal_Deaths_Per_Million("");
-        testBean.setNew_Deaths_Per_Million("0.0");
-        testBean.setIcu_Patients("");
-        testBean.setIcu_Patients_Per_Million("");
-        testBean.setHosp_Patients("");
-        testBean.setHosp_Patients_Per_Million("");
-        testBean.setTotal_Tests("");
-        testBean.setNew_Tests("");
+        testBean.setTotal_cases("");
+        testBean.setNew_cases("0.0");
+        testBean.setTotal_deaths("");
+        testBean.setNew_deaths("0.0");
+        testBean.setIcu_patients("");
+        testBean.setHosp_patients("");
+        testBean.setTotal_tests("");
+        testBean.setNew_tests("");
+        testBean.setPopulation("38928341.0");
 
         //then
         Assertions.assertEquals(result.get(0), testBean);
@@ -76,24 +70,19 @@ class CsvReadTest {
         CsvBeanOWID testBean = new CsvBeanOWID();
 
         //when
-        testBean.setISO_Code("ZWE");
+        testBean.setISO_code("ZWE");
         testBean.setContinent("Africa");
         testBean.setLocation("Zimbabwe");
         testBean.setDate("2020-12-11");
-        testBean.setTotal_Cases("11162.0");
-        testBean.setNew_Cases("81.0");
-        testBean.setTotal_Deaths("306.0");
-        testBean.setNew_Deaths("1.0");
-        testBean.setTotal_Cases_Per_Million("750.996");
-        testBean.setNew_Cases_Per_Million("5.45");
-        testBean.setTotal_Deaths_Per_Million("20.588");
-        testBean.setNew_Deaths_Per_Million("0.067");
-        testBean.setIcu_Patients("");
-        testBean.setIcu_Patients_Per_Million("");
-        testBean.setHosp_Patients("");
-        testBean.setHosp_Patients_Per_Million("");
-        testBean.setTotal_Tests("");
-        testBean.setNew_Tests("");
+        testBean.setTotal_cases("11162.0");
+        testBean.setNew_cases("81.0");
+        testBean.setTotal_deaths("306.0");
+        testBean.setNew_deaths("1.0");;
+        testBean.setIcu_patients("");
+        testBean.setHosp_patients("");
+        testBean.setTotal_tests("");
+        testBean.setNew_tests("");
+        testBean.setPopulation("14862927.0");
 
         //then
         Assertions.assertEquals(result.get(result.size()-1), testBean);

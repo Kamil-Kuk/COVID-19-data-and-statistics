@@ -28,22 +28,17 @@ public class CsvBeanOWID implements CsvBean {
     }
 
     @CsvBindByName
-    private String ISO_Code,
-            Continent,
-            Location,
-            Date,
-            Total_Cases,
-            New_Cases,
-            Total_Deaths,
-            New_Deaths,
-            Total_Cases_Per_Million,
-            New_Cases_Per_Million,
-            Total_Deaths_Per_Million,
-            New_Deaths_Per_Million,
-            Icu_Patients,
-            Icu_Patients_Per_Million,
-            Hosp_Patients,
-            Hosp_Patients_Per_Million,
-            Total_Tests,
-            New_Tests;
+    private String ISO_code,
+            continent,
+            location,
+            date,
+            total_cases,
+            new_cases,
+            total_deaths,
+            new_deaths,
+            icu_patients,
+            hosp_patients,
+            total_tests,
+            new_tests,
+            population;
 }
