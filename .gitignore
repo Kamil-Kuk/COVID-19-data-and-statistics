@@ -3,3 +3,5 @@
 /src/main/java/main/opencsvTutorial/Baeldung/
 /src/main/resources/csv/
 /src/main/java/main/opencsvTutorial/geekForGeeks/
+!/src/main/resources/META-INF/persistence.xml
+!/src/main/java/main/Main.java
