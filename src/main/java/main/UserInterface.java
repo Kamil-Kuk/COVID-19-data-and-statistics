@@ -1,5 +1,10 @@
 package main;
 
+import DB.entities.OWID;
+import DB.entities.TotalCases;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.text.ParseException;
 
 import java.time.LocalDate;
@@ -12,6 +17,8 @@ public class UserInterface {
     private static final Scanner INST_SCAN = new Scanner(System.in);
     private static final Scanner STRING_SCAN = new Scanner(System.in);
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private EntityManagerFactory factory;
+    private EntityManager manager;
 
     public static void main(String[] args) throws ParseException {
         LocalDate startDate;
@@ -99,17 +106,17 @@ public class UserInterface {
     }
 
 
-    public static LocalDate readDate(Scanner scan) {
+    private static LocalDate readDate(Scanner scan) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(scan.next(), formatter);
     }
 
 
-    public static void availableOptions() {
+    private static void availableOptions() {
         System.out.println("1.Total cases\n2.New cases\n3.Total deaths\n4.New deaths\n5.total_cases_per_million" +
                 "\n6.new_cases_per_million\n7.total_deaths_per_million\n8.new_deaths_per_million" +
                 "\n9.icu_patients\n10.icu_patients_per_million\n11.hosp_patients\n12.hosp_patients_per_million" +
-                "\n13.total_tests\n14.new_tests");
+                "\n13.total_tests\n14.new_tests\n15.get all data");
 //        int i = INST_SCAN.nextInt();
 //        switch (i) {
 //            case 1:
@@ -128,4 +135,12 @@ public class UserInterface {
 //            case 14:
 //        }
     }
+
+//   private TotalCases getTotalCases(){
+//       manager.getTransaction().begin();
+//       TotalCases totalCases = manager.find(OWID.class,???);
+//       manager.getTransaction().commit();
+//       return totalCases;
+//    }
+
 }
