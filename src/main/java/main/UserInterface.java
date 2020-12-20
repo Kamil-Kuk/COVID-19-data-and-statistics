@@ -1,8 +1,5 @@
 package main;
 
-import DB.entities.OWID;
-import DB.entities.TotalCases;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.text.ParseException;
@@ -10,7 +7,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInterface {
