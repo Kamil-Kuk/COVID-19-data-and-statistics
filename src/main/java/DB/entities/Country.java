@@ -2,7 +2,6 @@ package DB.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,18 +12,18 @@ import java.util.Set;
 @NoArgsConstructor
 public class Country {
 
-    //@Id
+    @Id
     @Column(name = "ISO_CODE")
-    protected String ISO_code;
+    private String ISO_code;
 
     @Column(name = "CONTINENT")
-    protected String continent;
+    private String continent;
 
     @Column(name = "NAME")
-    protected String name;
+    private String name;
 
     @Column(name = "POPULATION")
-    protected Integer population;
+    private Integer population;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     private Set<OWID> recordsOWID = new HashSet<>();
