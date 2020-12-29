@@ -1,27 +1,40 @@
 package DB.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
+@ToString
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 //@EqualsAndHashCode(exclude = "country")
 //@ToString(exclude = "country")
 @Entity
 public class OWID {
 
-    @Id
+  public OWID(Country country, Date date, Integer total_cases, Integer new_cases, Integer total_deaths, Integer new_deaths, Integer icu_patients, Integer hosp_patients, Integer total_tests, Integer new_tests) {
+    this.country = country;
+    this.date = date;
+    this.total_cases = total_cases;
+    this.new_cases = new_cases;
+    this.total_deaths = total_deaths;
+    this.new_deaths = new_deaths;
+    this.icu_patients = icu_patients;
+    this.hosp_patients = hosp_patients;
+    this.total_tests = total_tests;
+    this.new_tests = new_tests;
+  }
+
+  @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
   //  @Column(name = "ISO_CODE", nullable = false)
     @ManyToOne
-    @JoinColumn(name="ISO_CODE")
+    @JoinColumn(name="ISO_CODE", nullable =false)
     private Country country;
 
     @Temporal(TemporalType.DATE)
