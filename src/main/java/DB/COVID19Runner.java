@@ -1,56 +1,86 @@
 package DB;
 
 import DB.entities.Country;
-import DB.entities.adapters.CountryAdapter;
+import DB.entities.OWID;
 import main.CsvRead.CsvBean;
 import main.CsvRead.CsvBeanOWID;
 import main.CsvRead.CsvRead;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.Iterator;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 public class COVID19Runner {
-    public static void main(String[] args) {
 
+//        COVID19DAOImpl<Country> daoCountries = new COVID19DAOImpl<>();
+//        daoCountries.openConnection();
+//
+//        CsvRead csvRead = new CsvRead(new CsvBeanOWID());
+//        List<CsvBean> beans = csvRead.getBeanFromCSV();
+//        Set<Country> countries = new HashSet<>();
+
+
+//        beans = beans.stream()
+//                .map(bean -> (CsvBeanOWID) bean)
+//                .filter(bean -> !bean.getISO_code().isEmpty())
+//                .collect(Collectors.toList());
+
+//        List<Country> countries = beans.stream()
+//                .map(bean -> (CsvBeanOWID) bean)
+//                .filter(bean-> !bean.getISO_code().isEmpty())
+//                .map(bean -> new Country(bean))
+//                .collect(Collectors.toList());
+
+//        List<Country> countries = beans.stream()
+//                .map(bean -> new Country(bean))
+//                .forEach(country -> {
+//                    country.set();
+//                    System.out.println(country);
+//                });
+
+
+//        for (CsvBean bean : beans) {
+//            Country country = new Country();
+//            country.set((CsvBeanOWID) bean);
+//            countries.add(country);
+//        }
+//
+//        daoCountries.save(countries);
+//        daoCountries.closeConnection();
+//    }
+
+    public static void buildTableCountry(CsvRead csvRead) {
         COVID19DAOImpl<Country> daoCountries = new COVID19DAOImpl<>();
         daoCountries.openConnection();
+        List<CsvBean> beans = csvRead.getBeanFromCSV();
+        Set<Country> countries = new HashSet<>();
 
-        CsvRead csvRead = new CsvRead(new CsvBeanOWID());
-        List<CsvBeanOWID> result = csvRead.getBeanFromCSV();
+        for (CsvBean bean : beans) {
+            Country country = new Country();
+            country.set((CsvBeanOWID) bean);
+            countries.add(country);
+        }
 
-        CsvBeanOWID bean = new CsvBeanOWID();
-        bean.setISO_code("POL");
-        bean.setContinent("Europe");
-        bean.setLocation("Poland");
-        bean.setPopulation("38000000.0");
-
-        Country entity = new Country();
-        entity.set(bean);
-        System.out.println(entity.getClass());
-
-        daoCountries.save(entity);
-//        CountryAdapter countryEntry =  new CountryAdapter((CsvBeanOWID) beans.get(0));
-//        countryEntry.setISO_code();
-//        daoCountries.save(countryEntry);
-
-//        for(CsvBean bean : beans) {
-//            countryEntry = new CountryAdapter((CsvBeanOWID) bean);
-//            countryEntry.setISO_code();
-//            countryEntry.setContinent();
-//            countryEntry.setName();
-//            countryEntry.setPopulation();
-//            daoCountries.save(countryEntry);
-//        }
-
+        daoCountries.save(countries);
         daoCountries.closeConnection();
+    }
 
-//        CsvBeanOWID bean = new CsvBeanOWID();
-//        CountryAdapter entity1 = new CountryAdapter(bean);
-//        bean.setISO_code("");
-//        entity1.setISO_code();
-//        System.out.println(entity1.getISO_code());
+    public static void buildTableOWID(CsvRead csvRead) throws ParseException {
+        COVID19DAOImpl<OWID> daoCountries = new COVID19DAOImpl<>();
+        daoCountries.openConnection();
+        List<CsvBean> beans = csvRead.getBeanFromCSV();
+        List<OWID> owids = new ArrayList<>();
+
+        for (CsvBean bean : beans) {
+            OWID owid = new OWID();
+            owid.set((CsvBeanOWID) bean);
+            owids.add(owid);
+        }
+
+        daoCountries.save(owids);
+        daoCountries.closeConnection();
     }
 }
