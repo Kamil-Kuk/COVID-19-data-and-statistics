@@ -3,7 +3,6 @@ package DB.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @ToString
