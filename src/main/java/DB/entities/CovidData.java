@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Getter
-public class OWID {
+public class CovidData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class OWID {
     private Country country;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "DATE")
+    @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @Column(name = "TOTAL_CASES")
+    @Column(name = "TOTAL_CASES", nullable = false)
     private Integer total_cases;
 
     @Column(name = "DAILY_NEW_CASES")
@@ -48,11 +48,11 @@ public class OWID {
     @Column(name = "DAILY_NEW_TESTS")
     private Integer new_tests;
 
-    public OWID() {
+    public CovidData() {
     }
 
 
-    public void setCountry(Country country) {
+    public void setCountries(Country country) {
         this.country = country;
     }
 

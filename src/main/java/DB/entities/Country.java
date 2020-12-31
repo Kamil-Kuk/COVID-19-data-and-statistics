@@ -26,7 +26,7 @@ public class Country {
     private Integer population;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
-    private Set<OWID> recordsOWID = new HashSet<>();
+    private Set<CovidData> covidData = new HashSet<>();
 
 
     public Country() {
@@ -78,13 +78,10 @@ public class Country {
         setPopulationFromBean(bean);
     }
 
-    public void addRecordOWID(OWID record) {
-        this.recordsOWID.add(record);
+    public void addRecordCovidData(CovidData record) {
+        this.covidData.add(record);
     }
 
-    public void setRecordsOWID(Set<OWID> recordsOWID) {
-        this.recordsOWID = recordsOWID;
-    }
 
     @Override
     public boolean equals(Object o) {
