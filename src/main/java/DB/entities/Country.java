@@ -29,6 +29,13 @@ public class Country {
     private Set<CovidData> covidData = new HashSet<>();
 
 
+    public Country(String ISO_code, String continent, String name, Integer population) {
+        this.ISO_code = ISO_code;
+        this.continent = continent;
+        this.name = name;
+        this.population = population;
+    }
+
     public Country() {
     }
 
