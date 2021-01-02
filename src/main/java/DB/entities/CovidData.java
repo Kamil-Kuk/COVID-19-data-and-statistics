@@ -51,6 +51,18 @@ public class CovidData {
     public CovidData() {
     }
 
+    public CovidData(Country country, Date date, Integer total_cases, Integer new_cases, Integer total_deaths, Integer new_deaths, Integer icu_patients, Integer hosp_patients, Integer total_tests, Integer new_tests) {
+        this.country = country;
+        this.date = date;
+        this.total_cases = total_cases;
+        this.new_cases = new_cases;
+        this.total_deaths = total_deaths;
+        this.new_deaths = new_deaths;
+        this.icu_patients = icu_patients;
+        this.hosp_patients = hosp_patients;
+        this.total_tests = total_tests;
+        this.new_tests = new_tests;
+    }
 
     public void setCountries(Country country) {
         this.country = country;

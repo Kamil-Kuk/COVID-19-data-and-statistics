@@ -1,7 +1,7 @@
 package main;
 
 import DB.entities.Country;
-import DB.entities.OWID;
+import DB.entities.CovidData;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-//    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //    private static LocalDate startLocalDate;
 //    private static LocalDate endLocalDate;
     private static final Scanner INST_SCAN = new Scanner(System.in);
@@ -46,29 +46,29 @@ public class UserInterface {
         Country usa = new Country("USA", "North America", "USA", 330000000);
         Country australia = new Country("AUS", "Australia", "Australia", 32000000);
 
-        OWID pol20201101 = new OWID(poland, date20201101, 37990, 17171, 5783, 152,
+        CovidData pol20201101 = new CovidData(poland, date20201101, 37990, 17171, 5783, 152,
                 null, 152, 4585135, 48341);
-        OWID pol20201102 = new OWID(poland, date20201102, 395480, 15578, 5875, 92,
+        CovidData pol20201102 = new CovidData(poland, date20201102, 395480, 15578, 5875, 92,
                 null, 17223, 4649236, 64101);
-        OWID pol20201103 = new OWID(poland, date20201103, 414844, 19364, 6102, 227,
+        CovidData pol20201103 = new CovidData(poland, date20201103, 414844, 19364, 6102, 227,
                 null, 18160, 4712224, 62988);
-        OWID pol20201104 = new OWID(poland, date20201104, 439536, 24692, 6475, 373,
+        CovidData pol20201104 = new CovidData(poland, date20201104, 439536, 24692, 6475, 373,
                 null, 18654, 4779914, 67690);
-        OWID usa20201101 = new OWID(usa, date20201101, 9241521, 104327, 231623, 422,
+        CovidData usa20201101 = new CovidData(usa, date20201101, 9241521, 104327, 231623, 422,
                 9665, 47615, 153426532, 877936);
-        OWID usa20201102 = new OWID(usa, date20201102, 9324616, 83095, 232155, 532,
+        CovidData usa20201102 = new CovidData(usa, date20201102, 9324616, 83095, 232155, 532,
                 9970, 48773, 154409790, 983258);
-        OWID usa20201103 = new OWID(usa, date20201103, 9450988, 126372, 233720, 1565,
+        CovidData usa20201103 = new CovidData(usa, date20201103, 9450988, 126372, 233720, 1565,
                 10530, 50512, 155728586, 1318796);
-        OWID usa20201104 = new OWID(usa, date20201104, 9554518, 103530, 234812, 1092,
+        CovidData usa20201104 = new CovidData(usa, date20201104, 9554518, 103530, 234812, 1092,
                 10892, 52166, 157298430, 1569844);
-        OWID australia20201101 = new OWID(australia, date20201101, 27601, 6, 907, 0,
+        CovidData australia20201101 = new CovidData(australia, date20201101, 27601, 6, 907, 0,
                 null, null, 8825186, null);
-        OWID australia20201102 = new OWID(australia, date20201102, 27610, 9, 907, 0,
+        CovidData australia20201102 = new CovidData(australia, date20201102, 27610, 9, 907, 0,
                 null, null, 8855401, 30215);
-        OWID australia20201103 = new OWID(australia, date20201103, 27622, 12, 907, 0,
+        CovidData australia20201103 = new CovidData(australia, date20201103, 27622, 12, 907, 0,
                 null, null, 8887171, 31770);
-        OWID australia20201104 = new OWID(australia, date20201104, 27630, 8, 907, 0,
+        CovidData australia20201104 = new CovidData(australia, date20201104, 27630, 8, 907, 0,
                 null, null, 8933563, 46392);
 
 
@@ -231,17 +231,13 @@ public class UserInterface {
 
     public static void selectTotalCases() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
-//        OWID owid = (OWID) q.getSingleResult();
-//        System.out.print("Date: " + owid.getDate());
-//        System.out.print("  iso_code: " + owid.getCountry());
-//        System.out.println("  total_cases: " + owid.getTotal_cases());
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | total_cases: " + owid.getTotal_cases() + " |");
@@ -251,13 +247,13 @@ public class UserInterface {
 
     public static void selectDailyNewCases() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | daily_new_cases: " + owid.getNew_cases() + " |");
@@ -267,13 +263,13 @@ public class UserInterface {
 
     public static void selectTotalDeaths() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | total_deaths: " + owid.getTotal_deaths() + " |");
@@ -283,13 +279,13 @@ public class UserInterface {
 
     public static void selectDailyNewDeaths() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | daily_new_deaths: " + owid.getNew_deaths() + " |");
@@ -299,13 +295,13 @@ public class UserInterface {
 
     public static void selectIcuPatients() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | ICU Patients: " + owid.getIcu_patients() + " |");
@@ -315,13 +311,13 @@ public class UserInterface {
 
     public static void selectHospitalizedPatients() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Hospitalized Patients: " + owid.getHosp_patients() + " |");
@@ -331,13 +327,13 @@ public class UserInterface {
 
     public static void selectTotalTests() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Total tests: " + owid.getTotal_tests() + " |");
@@ -347,13 +343,13 @@ public class UserInterface {
 
     public static void selectDailyNewTests() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.print("| Date: " + owid.getDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Daily new tests: " + owid.getNew_tests() + " |");
@@ -363,13 +359,13 @@ public class UserInterface {
 
     public static void selectAllData() {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", OWID.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
-        List<OWID> owids = q.getResultList();
-        for (OWID owid : owids) {
+        List<CovidData> owids = q.getResultList();
+        for (CovidData owid : owids) {
             System.out.printf("| Date: %s | Country: %s | Total Cases: %d | Daily New Cases: %d |\n" +
                             "Total deaths: %d | Daily new deaths: %d | ICU patients: %d |\n" +
                             "Hospitalized patients: %d | Total Tests: %d | Daily new tests: %d |\n\n", owid.getDate(), owid.getCountry(),

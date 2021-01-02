@@ -1,6 +1,7 @@
 package DB.entities;
 
 import lombok.Getter;
+import lombok.ToString;
 import main.CsvRead.CsvBeanOWID;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@ToString
 public class Country {
 
     @Id
