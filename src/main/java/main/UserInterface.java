@@ -34,58 +34,58 @@ public class UserInterface {
 
         //===========================================temporary database========================================
 
-//        Date date20201101 = SIMPLE_DATE_FORMAT.parse("2020-11-01");
-//        Date date20201102 = SIMPLE_DATE_FORMAT.parse("2020-11-02");
-//        Date date20201103 = SIMPLE_DATE_FORMAT.parse("2020-11-03");
-//        Date date20201104 = SIMPLE_DATE_FORMAT.parse("2020-11-04");
-//
-//        Country poland = new Country("POL", "Europe", "Poland", 38000000);
-//        Country usa = new Country("USA", "North America", "USA", 330000000);
-//        Country australia = new Country("AUS", "Australia", "Australia", 32000000);
-//
-//        CovidData pol20201101 = new CovidData(poland, date20201101, 37990, 17171, 5783, 152,
-//                null, 152, 4585135, 48341);
-//        CovidData pol20201102 = new CovidData(poland, date20201102, 395480, 15578, 5875, 92,
-//                null, 17223, 4649236, 64101);
-//        CovidData pol20201103 = new CovidData(poland, date20201103, 414844, 19364, 6102, 227,
-//                null, 18160, 4712224, 62988);
-//        CovidData pol20201104 = new CovidData(poland, date20201104, 439536, 24692, 6475, 373,
-//                null, 18654, 4779914, 67690);
-//        CovidData usa20201101 = new CovidData(usa, date20201101, 9241521, 104327, 231623, 422,
-//                9665, 47615, 153426532, 877936);
-//        CovidData usa20201102 = new CovidData(usa, date20201102, 9324616, 83095, 232155, 532,
-//                9970, 48773, 154409790, 983258);
-//        CovidData usa20201103 = new CovidData(usa, date20201103, 9450988, 126372, 233720, 1565,
-//                10530, 50512, 155728586, 1318796);
-//        CovidData usa20201104 = new CovidData(usa, date20201104, 9554518, 103530, 234812, 1092,
-//                10892, 52166, 157298430, 1569844);
-//        CovidData australia20201101 = new CovidData(australia, date20201101, 27601, 6, 907, 0,
-//                null, null, 8825186, null);
-//        CovidData australia20201102 = new CovidData(australia, date20201102, 27610, 9, 907, 0,
-//                null, null, 8855401, 30215);
-//        CovidData australia20201103 = new CovidData(australia, date20201103, 27622, 12, 907, 0,
-//                null, null, 8887171, 31770);
-//        CovidData australia20201104 = new CovidData(australia, date20201104, 27630, 8, 907, 0,
-//                null, null, 8933563, 46392);
-//
-//
-//        MANAGER.getTransaction().begin();
-//        MANAGER.persist(poland);
-//        MANAGER.persist(usa);
-//        MANAGER.persist(australia);
-//        MANAGER.persist(pol20201101);
-//        MANAGER.persist(pol20201102);
-//        MANAGER.persist(pol20201103);
-//        MANAGER.persist(pol20201104);
-//        MANAGER.persist(usa20201101);
-//        MANAGER.persist(usa20201102);
-//        MANAGER.persist(usa20201103);
-//        MANAGER.persist(usa20201104);
-//        MANAGER.persist(australia20201101);
-//        MANAGER.persist(australia20201102);
-//        MANAGER.persist(australia20201103);
-//        MANAGER.persist(australia20201104);
-//        MANAGER.getTransaction().commit();
+        Date date20201101 = SIMPLE_DATE_FORMAT.parse("2020-11-01");
+        Date date20201102 = SIMPLE_DATE_FORMAT.parse("2020-11-02");
+        Date date20201103 = SIMPLE_DATE_FORMAT.parse("2020-11-03");
+        Date date20201104 = SIMPLE_DATE_FORMAT.parse("2020-11-04");
+
+        Country poland = new Country("POL", "Europe", "Poland", 38000000);
+        Country usa = new Country("USA", "North America", "USA", 330000000);
+        Country australia = new Country("AUS", "Australia", "Australia", 32000000);
+
+        CovidData pol20201101 = new CovidData(poland, date20201101, 37990, 17171, 5783, 152,
+                null, 152, 4585135, 48341);
+        CovidData pol20201102 = new CovidData(poland, date20201102, 395480, 15578, 5875, 92,
+                null, 17223, 4649236, 64101);
+        CovidData pol20201103 = new CovidData(poland, date20201103, 414844, 19364, 6102, 227,
+                null, 18160, 4712224, 62988);
+        CovidData pol20201104 = new CovidData(poland, date20201104, 439536, 24692, 6475, 373,
+                null, 18654, 4779914, 67690);
+        CovidData usa20201101 = new CovidData(usa, date20201101, 9241521, 104327, 231623, 422,
+                9665, 47615, 153426532, 877936);
+        CovidData usa20201102 = new CovidData(usa, date20201102, 9324616, 83095, 232155, 532,
+                9970, 48773, 154409790, 983258);
+        CovidData usa20201103 = new CovidData(usa, date20201103, 9450988, 126372, 233720, 1565,
+                10530, 50512, 155728586, 1318796);
+        CovidData usa20201104 = new CovidData(usa, date20201104, 9554518, 103530, 234812, 1092,
+                10892, 52166, 157298430, 1569844);
+        CovidData australia20201101 = new CovidData(australia, date20201101, 27601, 6, 907, 0,
+                null, null, 8825186, null);
+        CovidData australia20201102 = new CovidData(australia, date20201102, 27610, 9, 907, 0,
+                null, null, 8855401, 30215);
+        CovidData australia20201103 = new CovidData(australia, date20201103, 27622, 12, 907, 0,
+                null, null, 8887171, 31770);
+        CovidData australia20201104 = new CovidData(australia, date20201104, 27630, 8, 907, 0,
+                null, null, 8933563, 46392);
+
+
+        MANAGER.getTransaction().begin();
+        MANAGER.persist(poland);
+        MANAGER.persist(usa);
+        MANAGER.persist(australia);
+        MANAGER.persist(pol20201101);
+        MANAGER.persist(pol20201102);
+        MANAGER.persist(pol20201103);
+        MANAGER.persist(pol20201104);
+        MANAGER.persist(usa20201101);
+        MANAGER.persist(usa20201102);
+        MANAGER.persist(usa20201103);
+        MANAGER.persist(usa20201104);
+        MANAGER.persist(australia20201101);
+        MANAGER.persist(australia20201102);
+        MANAGER.persist(australia20201103);
+        MANAGER.persist(australia20201104);
+        MANAGER.getTransaction().commit();
 
 
         //===========================================temporary database========================================
@@ -166,7 +166,7 @@ public class UserInterface {
 
     private static void selectTotalCases() {
         MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
