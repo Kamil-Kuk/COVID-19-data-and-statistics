@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-class CsvBeanCovidDataTest {
+class CsvBeanAllDataCovidDataTest {
 
     @Test
     void shouldCSVFileExist() {

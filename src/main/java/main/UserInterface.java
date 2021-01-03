@@ -7,7 +7,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import main.CsvRead.CsvBeanOWID;
 import main.CsvRead.CsvRead;
-import main.CsvWrite.CsvWrite;
+import main.CsvWrite.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -28,6 +30,7 @@ public class UserInterface {
 //    private static LocalDate endLocalDate;
     private static final Scanner INST_SCAN = new Scanner(System.in);
     private static final Scanner STRING_SCAN = new Scanner(System.in);
+    private static final Scanner EXPORT_SCAN = new Scanner(System.in);
     private static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     //private static COVID19DAO dao = new COVID19DAO();
     //private static EntityManager manager = dao.getManager();
@@ -38,6 +41,7 @@ public class UserInterface {
 
     private static Date startDate;
     private static Date endDate;
+    private static boolean exportFlag;
 
     public static void main(String[] args) throws ParseException {
 
@@ -202,6 +206,12 @@ public class UserInterface {
 
 
         int i = INST_SCAN.nextInt();
+
+        System.out.println("Do you want to export results to .csv file? (yes/no): ");
+        String exportFlagString = EXPORT_SCAN.nextLine();
+        if(exportFlagString.equalsIgnoreCase("yes")) exportFlag = true;
+
+
         switch (i) {
             case 1:
                 selectTotalCases(manager);
@@ -230,26 +240,40 @@ public class UserInterface {
                 selectAllData(manager);
                 break;
         }
+
+        if(exportFlag) System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
     }
 
     public static void selectTotalCases(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
 
         List<CovidData> owids = q.getResultList();
+
         for (CovidData owid : owids) {
-            System.out.print("| Date: " + owid.getDate());
+            System.out.print("| Date: " + owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | total_cases: " + owid.getTotal_cases() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanTotalCases bean = new CsvBeanTotalCases();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setTotal_cases(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-TOTAL_CASES",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectDailyNewCases(EntityManager manager) {
+    public static void selectDailyNewCases(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -260,11 +284,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | daily_new_cases: " + owid.getNew_cases() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanNewCases bean = new CsvBeanNewCases();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setNew_cases(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-NEW_CASES",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectTotalDeaths(EntityManager manager) {
+    public static void selectTotalDeaths(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -275,11 +310,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | total_deaths: " + owid.getTotal_deaths() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanTotalDeaths bean = new CsvBeanTotalDeaths();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setTotal_deaths(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-TOTAL_DEATHS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectDailyNewDeaths(EntityManager manager) {
+    public static void selectDailyNewDeaths(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -290,11 +336,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | daily_new_deaths: " + owid.getNew_deaths() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanNewDeaths bean = new CsvBeanNewDeaths();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setNew_deaths(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-NEW_DEATHS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectIcuPatients(EntityManager manager) {
+    public static void selectIcuPatients(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -305,11 +362,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | ICU Patients: " + owid.getIcu_patients() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanIcuPatients bean = new CsvBeanIcuPatients();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setIcu_patients(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-ICU_PATIENTS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectHospitalizedPatients(EntityManager manager) {
+    public static void selectHospitalizedPatients(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -320,11 +388,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Hospitalized Patients: " + owid.getHosp_patients() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanHospPatients bean = new CsvBeanHospPatients();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setHosp_patients(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-HOSP_PATIENTS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectTotalTests(EntityManager manager) {
+    public static void selectTotalTests(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -335,11 +414,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Total tests: " + owid.getTotal_tests() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanTotalTests bean = new CsvBeanTotalTests();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setTotal_tests(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-TOTAL_TESTS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectDailyNewTests(EntityManager manager) {
+    public static void selectDailyNewTests(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -350,11 +440,22 @@ public class UserInterface {
             System.out.print(" | iso_code: " + owid.getCountry());
             System.out.println(" | Daily new tests: " + owid.getNew_tests() + " |");
         }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanNewTests bean = new CsvBeanNewTests();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setNew_tests(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-NEW_TESTS",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
+        }
     }
 
-    public static void selectAllData(EntityManager manager) {
+    public static void selectAllData(EntityManager manager) throws CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date DESC", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.date", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -366,6 +467,24 @@ public class UserInterface {
                             "Hospitalized patients: %d | Total Tests: %d | Daily new tests: %d |\n\n", owid.getDate(), owid.getCountry(),
                     owid.getTotal_cases(), owid.getNew_cases(), owid.getTotal_deaths(), owid.getNew_deaths(), owid.getIcu_patients(),
                     owid.getHosp_patients(), owid.getTotal_tests(), owid.getNew_tests());
+        }
+        if(exportFlag){
+            List<CsvBean> beans = new ArrayList<>();
+            for (CovidData owid : owids) {
+                CsvBeanAllData bean = new CsvBeanAllData();
+                bean.setDate(owid.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                bean.setTotal_cases(owid.getTotal_cases());
+                bean.setNew_cases(owid.getNew_cases());
+                bean.setTotal_deaths(owid.getTotal_deaths());
+                bean.setNew_deaths(owid.getNew_deaths());
+                bean.setIcu_patients(owid.getIcu_patients());
+                bean.setHosp_patients(owid.getHosp_patients());
+                bean.setTotal_tests(owid.getTotal_tests());
+                bean.setNew_tests(owid.getTotal_cases());
+                beans.add(bean);
+            }
+            String filename = String.format("%s-ALL_DATA",owids.get(0).getCountry().toString());
+            CsvWrite.writeCsvFromBean(beans,filename);
         }
     }
 

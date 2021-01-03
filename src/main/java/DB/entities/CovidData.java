@@ -49,6 +49,7 @@ public class CovidData {
     @Column(name = "DAILY_NEW_TESTS")
     private Integer new_tests;
 
+
     public CovidData() {
     }
 
