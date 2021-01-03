@@ -12,9 +12,9 @@ import java.util.Date;
 //@EqualsAndHashCode(exclude = "country")
 //@ToString(exclude = "country")
 @Entity
-public class OWID {
+public class CovidData {
 
-  public OWID(Country country, Date date, Integer total_cases, Integer new_cases, Integer total_deaths, Integer new_deaths, Integer icu_patients, Integer hosp_patients, Integer total_tests, Integer new_tests) {
+  public CovidData(Country country, Date date, Integer total_cases, Integer new_cases, Integer total_deaths, Integer new_deaths, Integer icu_patients, Integer hosp_patients, Integer total_tests, Integer new_tests) {
     this.country = country;
     this.date = date;
     this.total_cases = total_cases;

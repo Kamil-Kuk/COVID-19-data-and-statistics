@@ -34,11 +34,11 @@ public class Country {
     private Integer population;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
-    private Set<OWID> recordsOWID = new HashSet<>();
+    private Set<CovidData> recordsCovidData = new HashSet<>();
 
-    public void addRecordOWID(OWID record) { this.recordsOWID.add(record); }
+    public void addRecordOWID(CovidData record) { this.recordsCovidData.add(record); }
 
-    public void setRecordsOWID(Set<OWID> recordsOWID) {
-        this.recordsOWID = recordsOWID;
+    public void setRecordsCovidData(Set<CovidData> recordsCovidData) {
+        this.recordsCovidData = recordsCovidData;
     }
 }
