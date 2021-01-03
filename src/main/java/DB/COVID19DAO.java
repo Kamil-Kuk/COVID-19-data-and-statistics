@@ -18,12 +18,12 @@ public class COVID19DAO {
     private Set<Country> countries;
     private List<CovidData> covidData;
 
-    private void openConnection() {
+    public void openConnection() {
         factory = Persistence.createEntityManagerFactory("mysql_local");
         manager = factory.createEntityManager();
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         manager.close();
         factory.close();
     }
@@ -72,7 +72,6 @@ public class COVID19DAO {
     }
 
     public void buildDatabase(CsvRead csvRead) {
-        openConnection();
         buildEntitySetCountry(csvRead);
         buildEntityListCovidData(csvRead);
 
@@ -85,7 +84,10 @@ public class COVID19DAO {
         }
         manager.getTransaction().commit();
 
-        closeConnection();
+    }
+
+    public EntityManager getManager() {
+        return manager;
     }
 
 }

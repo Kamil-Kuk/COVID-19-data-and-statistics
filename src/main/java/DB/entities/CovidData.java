@@ -10,6 +10,7 @@ import java.util.Date;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 public class CovidData {
 
     @Id

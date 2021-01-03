@@ -1,5 +1,6 @@
 package DB.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import main.CsvRead.CsvBeanOWID;
@@ -11,7 +12,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@ToString
 public class Country {
 
     @Id
@@ -91,20 +91,24 @@ public class Country {
         this.covidData.add(record);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(getISO_code(), country.getISO_code()) &&
-                Objects.equals(getContinent(), country.getContinent()) &&
-                Objects.equals(getName(), country.getName()) &&
-                Objects.equals(getPopulation(), country.getPopulation());
+        return Objects.equals(ISO_code, country.ISO_code) &&
+                Objects.equals(continent, country.continent) &&
+                Objects.equals(name, country.name) &&
+                Objects.equals(population, country.population);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getISO_code(), getContinent(), getName(), getPopulation());
+        return Objects.hash(ISO_code, continent, name, population);
+    }
+
+    @Override
+    public String toString() {
+        return ISO_code;
     }
 }
