@@ -18,7 +18,7 @@ public class CovidData {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ISO_CODE")
+    @JoinColumn(name = "ISO_CODE",nullable = false)
     private Country country;
 
     @Temporal(TemporalType.DATE)

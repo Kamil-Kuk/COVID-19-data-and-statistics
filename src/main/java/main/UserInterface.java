@@ -1,13 +1,21 @@
 package main;
 
+import DB.COVID19DAO;
 import DB.entities.Country;
 import DB.entities.CovidData;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import main.CsvRead.CsvBeanOWID;
+import main.CsvRead.CsvRead;
+import main.CsvWrite.CsvWrite;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import java.io.IOException;
 import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -19,8 +27,10 @@ public class UserInterface {
     private static final Scanner INT_SCAN = new Scanner(System.in);
     private static final Scanner STRING_SCAN = new Scanner(System.in);
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+//    private static COVID19DAO dao = new COVID19DAO();
+//    private static EntityManager manager = dao.getManager();
     private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("mysql_local");
-    private static final EntityManager MANAGER = FACTORY.createEntityManager();
+    private static final EntityManager manager = FACTORY.createEntityManager();
     private static String countryIso;
     private static final Date DATE_NOW = new Date();
 
@@ -30,6 +40,18 @@ public class UserInterface {
     private static boolean dateFormatFlag;
 
     public static void main(String[] args) throws ParseException {
+
+        //===========================================construction of database========================================
+
+//        CsvBeanOWID bean = new CsvBeanOWID();
+//        CsvRead csvRead = new CsvRead(bean);
+//        COVID19DAO dao = new COVID19DAO();
+//        dao.openConnection();
+//        EntityManager manager = dao.getManager();
+//        dao.buildDatabase(csvRead);
+
+
+        //===========================================construction of database========================================
 
 
         //===========================================temporary database========================================
@@ -44,13 +66,13 @@ public class UserInterface {
         Country australia = new Country("AUS", "Australia", "Australia", 32000000);
 
         CovidData pol20201101 = new CovidData(poland, date20201101, 37990, 17171, 5783, 152,
-                null, 152, 4585135, 48341);
+                666, 152, 4585135, 48341);
         CovidData pol20201102 = new CovidData(poland, date20201102, 395480, 15578, 5875, 92,
-                null, 17223, 4649236, 64101);
+                666, 17223, 4649236, 64101);
         CovidData pol20201103 = new CovidData(poland, date20201103, 414844, 19364, 6102, 227,
-                null, 18160, 4712224, 62988);
+                666, 18160, 4712224, 62988);
         CovidData pol20201104 = new CovidData(poland, date20201104, 439536, 24692, 6475, 373,
-                null, 18654, 4779914, 67690);
+                666, 18654, 4779914, 67690);
         CovidData usa20201101 = new CovidData(usa, date20201101, 9241521, 104327, 231623, 422,
                 9665, 47615, 153426532, 877936);
         CovidData usa20201102 = new CovidData(usa, date20201102, 9324616, 83095, 232155, 532,
@@ -60,32 +82,32 @@ public class UserInterface {
         CovidData usa20201104 = new CovidData(usa, date20201104, 9554518, 103530, 234812, 1092,
                 10892, 52166, 157298430, 1569844);
         CovidData australia20201101 = new CovidData(australia, date20201101, 27601, 6, 907, 0,
-                null, null, 8825186, null);
+                666, 666, 8825186, 666);
         CovidData australia20201102 = new CovidData(australia, date20201102, 27610, 9, 907, 0,
-                null, null, 8855401, 30215);
+                666, 666, 8855401, 30215);
         CovidData australia20201103 = new CovidData(australia, date20201103, 27622, 12, 907, 0,
-                null, null, 8887171, 31770);
+                666, 666, 8887171, 31770);
         CovidData australia20201104 = new CovidData(australia, date20201104, 27630, 8, 907, 0,
-                null, null, 8933563, 46392);
+                666, 666, 8933563, 46392);
 
 
-        MANAGER.getTransaction().begin();
-        MANAGER.persist(poland);
-        MANAGER.persist(usa);
-        MANAGER.persist(australia);
-        MANAGER.persist(pol20201101);
-        MANAGER.persist(pol20201102);
-        MANAGER.persist(pol20201103);
-        MANAGER.persist(pol20201104);
-        MANAGER.persist(usa20201101);
-        MANAGER.persist(usa20201102);
-        MANAGER.persist(usa20201103);
-        MANAGER.persist(usa20201104);
-        MANAGER.persist(australia20201101);
-        MANAGER.persist(australia20201102);
-        MANAGER.persist(australia20201103);
-        MANAGER.persist(australia20201104);
-        MANAGER.getTransaction().commit();
+        UserInterface.manager.getTransaction().begin();
+        UserInterface.manager.persist(poland);
+        UserInterface.manager.persist(usa);
+        UserInterface.manager.persist(australia);
+        UserInterface.manager.persist(pol20201101);
+        UserInterface.manager.persist(pol20201102);
+        UserInterface.manager.persist(pol20201103);
+        UserInterface.manager.persist(pol20201104);
+        UserInterface.manager.persist(usa20201101);
+        UserInterface.manager.persist(usa20201102);
+        UserInterface.manager.persist(usa20201103);
+        UserInterface.manager.persist(usa20201104);
+        UserInterface.manager.persist(australia20201101);
+        UserInterface.manager.persist(australia20201102);
+        UserInterface.manager.persist(australia20201103);
+        UserInterface.manager.persist(australia20201104);
+        UserInterface.manager.getTransaction().commit();
 
 
         //===========================================temporary database========================================
@@ -114,8 +136,8 @@ public class UserInterface {
         }
 
 
-        FACTORY.close();
-
+//        dao.closeConnection();
+FACTORY.close();
     }
 
 
@@ -127,7 +149,6 @@ public class UserInterface {
             try {
                 errorFlag = false;
                 int i = scan.nextInt();
-//                int i = Integer.parseInt(scan.nextLine());
                 switch (i) {
                     case 1:
                         selectTotalCases();
@@ -165,8 +186,8 @@ public class UserInterface {
     }
 
     private static void selectTotalCases() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -177,12 +198,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | total_cases: " + covidData.getTotal_cases() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectDailyNewCases() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -193,12 +214,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | daily_new_cases: " + covidData.getNew_cases() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectTotalDeaths() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -209,12 +230,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | total_deaths: " + covidData.getTotal_deaths() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectDailyNewDeaths() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -225,12 +246,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | daily_new_deaths: " + covidData.getNew_deaths() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectIcuPatients() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -241,12 +262,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | ICU Patients: " + covidData.getIcu_patients() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectHospitalizedPatients() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -257,12 +278,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Hospitalized Patients: " + covidData.getHosp_patients() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectTotalTests() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -273,12 +294,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Total tests: " + covidData.getTotal_tests() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectDailyNewTests() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -289,12 +310,12 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Daily new tests: " + covidData.getNew_tests() + " |");
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void selectAllData() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -307,19 +328,19 @@ public class UserInterface {
                     covidData.getTotal_cases(), covidData.getNew_cases(), covidData.getTotal_deaths(), covidData.getNew_deaths(), covidData.getIcu_patients(),
                     covidData.getHosp_patients(), covidData.getTotal_tests(), covidData.getNew_tests());
         }
-        MANAGER.close();
+        manager.close();
     }
 
     private static void displayAvailableCountries() {
-        MANAGER.getTransaction().begin();
-        Query q = MANAGER.createNativeQuery("SELECT ISO_CODE FROM Country", Country.class);
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT ISO_CODE FROM Country", Country.class);
 
 
         List<Country> countries = q.getResultList();
         for (Country country : countries) {
             System.out.println(" | iso_code: " + country.getISO_code());
         }
-        MANAGER.close();
+        manager.close();
     }
 
 //    private static Date selectFirstAvailableDate(String countryIso){
