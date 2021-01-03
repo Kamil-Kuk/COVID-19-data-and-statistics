@@ -7,6 +7,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -17,6 +18,8 @@ public class CsvWrite {
 
     public static void writeCsvFromBean(List<CsvBean> list, String fileName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
         String FILE_NAME = "src/main/export/" + fileName + ".csv";
+        File theDir = new File("src/main/export");
+        theDir.mkdir();
 
         Writer writer = new FileWriter(FILE_NAME);
         StatefulBeanToCsv sbc = new StatefulBeanToCsvBuilder<CsvBean>(writer)
