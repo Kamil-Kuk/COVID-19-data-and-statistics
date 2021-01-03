@@ -1,5 +1,8 @@
 package main;
 
+import main.downloader.Downloader;
+
+import java.io.IOException;
 import java.text.ParseException;
 
 
@@ -28,6 +31,16 @@ public class Main {
 //        } catch (CsvRequiredFieldEmptyException e) {
 //            e.printStackTrace();
 //        }
+//        try {
+//            Downloader.getFileNIO();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            Downloader.getFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
