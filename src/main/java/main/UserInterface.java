@@ -121,6 +121,7 @@ public class UserInterface {
         System.out.println("COVID-19: DATA AND STATISTIC");
         System.out.println("Select Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                 " or press Q to end program");
+        // dodać zapytanie o tworzenie i aktualizację bazy danych
         countryIso = STRING_SCAN.next();
         if (countryIso.equalsIgnoreCase("q")) System.exit(0);
         if (countryIso.equalsIgnoreCase("h")) {
@@ -242,7 +243,7 @@ public class UserInterface {
 
     private static void selectIcuPatients(EntityManager manager) {
         manager.getTransaction().begin();
-        Query q = manager.createNativeQuery("SELECT * FROM OWID o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -330,7 +331,7 @@ public class UserInterface {
 
 //    private static Date selectFirstAvailableDate(String countryIso){
 //        manager.getTransaction().begin();
-//        Query q = manager.createNativeQuery("SELECT MIN(o.DATE) FROM OWID o WHERE o.ISO_CODE=?", OWID.class);
+//        Query q = manager.createNativeQuery("SELECT MIN(o.DATE) FROM CovidData o WHERE o.ISO_CODE=?", CovidData.class);
 //        q.setParameter(1, countryIso);
 //        return (Date)q.getSingleResult();
 //    }
