@@ -31,6 +31,7 @@ public class UserInterface {
     //    private static EntityManager manager = dao.getManager();
 //    private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("mysql_local");
 //    private static final EntityManager manager = FACTORY.createEntityManager();
+private static final Scanner EXPORT_SCAN = new Scanner(System.in);
     private static String countryIso;
     private static final Date DATE_NOW = new Date();
 
@@ -38,6 +39,7 @@ public class UserInterface {
     private static Date endDate;
     private static boolean errorFlag;
     private static boolean dateFormatFlag;
+    private static boolean exportFlag;
 
     public static void main(String[] args) throws ParseException, NullPointerException {
 
@@ -119,9 +121,16 @@ public class UserInterface {
     private static void initialMethod(EntityManager manager) {
 
         System.out.println("COVID-19: DATA AND STATISTIC");
+
+        System.out.println("Do you want to download/update csv file from OWID database? (Y/N");
+        STRING_SCAN.next();
+
         System.out.println("Select Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                 " or press Q to end program");
         // dodać zapytanie o tworzenie i aktualizację bazy danych
+
+
+
         countryIso = STRING_SCAN.next();
         if (countryIso.equalsIgnoreCase("q")) System.exit(0);
         if (countryIso.equalsIgnoreCase("h")) {
@@ -145,6 +154,11 @@ public class UserInterface {
             try {
                 errorFlag = false;
                 int i = scan.nextInt();
+
+                System.out.println("Do you want to export results to .csv file? (yes/no): ");
+                String exportFlagString = EXPORT_SCAN.nextLine();
+                if(exportFlagString.equalsIgnoreCase("yes")) exportFlag = true;
+
                 switch (i) {
                     case 1:
                         selectTotalCases(manager);
@@ -177,8 +191,15 @@ public class UserInterface {
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input format. Try again.");
                 scan.reset();
+            } catch (CsvRequiredFieldEmptyException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CsvDataTypeMismatchException e) {
+                e.printStackTrace();
             }
         } while (errorFlag);
+        if(exportFlag) System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
     }
 
     private static void selectTotalCases(EntityManager manager) {
@@ -194,6 +215,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | total_cases: " + covidData.getTotal_cases() + " |");
         }
+
     }
 
     private static void selectDailyNewCases(EntityManager manager) {

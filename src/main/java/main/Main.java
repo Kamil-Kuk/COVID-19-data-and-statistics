@@ -39,11 +39,11 @@ public class Main {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//        try {
-//            Downloader.getFile();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Downloader.getFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
