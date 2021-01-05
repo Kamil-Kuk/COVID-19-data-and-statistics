@@ -9,6 +9,7 @@ import main.CsvRead.CsvRead;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.nio.file.NoSuchFileException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -71,7 +72,7 @@ public class COVID19DAO {
         }
     }
 
-    public void buildDatabase(CsvRead csvRead) {
+    public void buildDatabase(CsvRead csvRead) throws NoSuchFileException {
         buildEntitySetCountry(csvRead);
         buildEntityListCovidData(csvRead);
 

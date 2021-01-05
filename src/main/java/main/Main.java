@@ -14,7 +14,7 @@ public class Main {
         CsvBeanOWID bean = new CsvBeanOWID();
         CsvRead csvRead = new CsvRead(bean);
         COVID19DAO dao = new COVID19DAO();
-        dao.buildDatabase(csvRead);
+//        dao.buildDatabase(csvRead);
 
 //        List<CovidData> beans = new ArrayList<>();
 //
