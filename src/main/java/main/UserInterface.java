@@ -28,9 +28,6 @@ public class UserInterface {
     private static final Scanner STRING_SCAN = new Scanner(System.in);
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static COVID19DAO dao = new COVID19DAO();
-    //    private static EntityManager manager = dao.getManager();
-//    private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("mysql_local");
-//    private static final EntityManager manager = FACTORY.createEntityManager();
     private static final Scanner EXPORT_SCAN = new Scanner(System.in);
     private static String countryIso;
     private static final Date DATE_NOW = new Date();
@@ -44,76 +41,8 @@ public class UserInterface {
 
     public static void main(String[] args) throws ParseException, NullPointerException {
 
-        //===========================================construction of database========================================
-
-//        CsvBeanOWID bean = new CsvBeanOWID();
-//        CsvRead csvRead = new CsvRead(bean);
-//        COVID19DAO dao = new COVID19DAO();
         dao.openConnection();
         EntityManager manager = dao.getManager();
-//        dao.buildDatabase(csvRead);
-
-
-        //===========================================construction of database========================================
-
-
-        //===========================================temporary database========================================
-
-//        Date date20201101 = SIMPLE_DATE_FORMAT.parse("2020-11-01");
-//        Date date20201102 = SIMPLE_DATE_FORMAT.parse("2020-11-02");
-//        Date date20201103 = SIMPLE_DATE_FORMAT.parse("2020-11-03");
-//        Date date20201104 = SIMPLE_DATE_FORMAT.parse("2020-11-04");
-//
-//        Country poland = new Country("POL", "Europe", "Poland", 38000000);
-//        Country usa = new Country("USA", "North America", "USA", 330000000);
-//        Country australia = new Country("AUS", "Australia", "Australia", 32000000);
-//
-//        CovidData pol20201101 = new CovidData(poland, date20201101, 37990, 17171, 5783, 152,
-//                666, 152, 4585135, 48341);
-//        CovidData pol20201102 = new CovidData(poland, date20201102, 395480, 15578, 5875, 92,
-//                666, 17223, 4649236, 64101);
-//        CovidData pol20201103 = new CovidData(poland, date20201103, 414844, 19364, 6102, 227,
-//                666, 18160, 4712224, 62988);
-//        CovidData pol20201104 = new CovidData(poland, date20201104, 439536, 24692, 6475, 373,
-//                666, 18654, 4779914, 67690);
-//        CovidData usa20201101 = new CovidData(usa, date20201101, 9241521, 104327, 231623, 422,
-//                9665, 47615, 153426532, 877936);
-//        CovidData usa20201102 = new CovidData(usa, date20201102, 9324616, 83095, 232155, 532,
-//                9970, 48773, 154409790, 983258);
-//        CovidData usa20201103 = new CovidData(usa, date20201103, 9450988, 126372, 233720, 1565,
-//                10530, 50512, 155728586, 1318796);
-//        CovidData usa20201104 = new CovidData(usa, date20201104, 9554518, 103530, 234812, 1092,
-//                10892, 52166, 157298430, 1569844);
-//        CovidData australia20201101 = new CovidData(australia, date20201101, 27601, 6, 907, 0,
-//                666, 666, 8825186, 666);
-//        CovidData australia20201102 = new CovidData(australia, date20201102, 27610, 9, 907, 0,
-//                666, 666, 8855401, 30215);
-//        CovidData australia20201103 = new CovidData(australia, date20201103, 27622, 12, 907, 0,
-//                666, 666, 8887171, 31770);
-//        CovidData australia20201104 = new CovidData(australia, date20201104, 27630, 8, 907, 0,
-//                666, 666, 8933563, 46392);
-//
-//
-//        manager.getTransaction().begin();
-//        manager.persist(poland);
-//        manager.persist(usa);
-//        manager.persist(australia);
-//        manager.persist(pol20201101);
-//        manager.persist(pol20201102);
-//        manager.persist(pol20201103);
-//        manager.persist(pol20201104);
-//        manager.persist(usa20201101);
-//        manager.persist(usa20201102);
-//        manager.persist(usa20201103);
-//        manager.persist(usa20201104);
-//        manager.persist(australia20201101);
-//        manager.persist(australia20201102);
-//        manager.persist(australia20201103);
-//        manager.persist(australia20201104);
-//        manager.getTransaction().commit();
-//
-
-        //===========================================temporary database========================================
         initialMethod(manager);
         dao.closeConnection();
     }
@@ -135,8 +64,7 @@ public class UserInterface {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (answerYN.equalsIgnoreCase("n")) {
+            } else if (answerYN.equalsIgnoreCase("n")) {
                 try {
                     answerYNFlag = false;
                     dao.buildDatabase(csvRead);
@@ -150,34 +78,33 @@ public class UserInterface {
         }
         while (answerYNFlag);
 
-        answerYNFlag=true;
+        answerYNFlag = true;
         do {
             System.out.println("Select Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                     " or press Q to end program.");
-            // dodać zapytanie o tworzenie i aktualizację bazy danych
 
 
             countryIso = STRING_SCAN.next();
-            if (countryIso.equalsIgnoreCase("q")){
-                answerYNFlag=false;
+            if (countryIso.equalsIgnoreCase("q")) {
+                answerYNFlag = false;
                 System.exit(0);
             }
             if (countryIso.equalsIgnoreCase("h")) {
-                answerYNFlag=true;
+                answerYNFlag = true;
                 displayAvailableCountries(manager);
                 STRING_SCAN.reset();
             } else {
-                answerYNFlag=false;
+                answerYNFlag = false;
                 selectStartDate(INT_SCAN);
                 selectEndDate(INT_SCAN);
-                availableOptions(INT_SCAN, manager);
+                availableOptions(manager);
             }
         }
         while (answerYNFlag);
     }
 
 
-    private static void availableOptions(Scanner scan, EntityManager manager) {
+    private static void availableOptions(EntityManager manager) {
         System.out.println("1.Total number of cases\n2.Daily number of new cases\n3.Total deaths due COVID-19\n" +
                 "4.Daily number of new deaths due COVID-19\n5.Number of intensive care unit patients with SARS-Cov-2\n" +
                 "6.Number of hospitalized Patients with SARS-Cov-2\n7.Total number of tests performed\n" +
@@ -186,11 +113,24 @@ public class UserInterface {
         do {
             try {
                 errorFlag = false;
-                int i = scan.nextInt();
-
-                System.out.println("Do you want to export results to .csv file? (Y/N): ");
-                String exportFlagString = EXPORT_SCAN.nextLine();
-                if (exportFlagString.equalsIgnoreCase("Y")) exportFlag = true;
+                int i=INT_SCAN.nextInt();
+                answerYNFlag = true;
+                do {
+                    System.out.println("Do you want to export results to .csv file? (Y/N): ");
+                    String exportFlagString = EXPORT_SCAN.nextLine();
+                    if (exportFlagString.equalsIgnoreCase("Y")) {
+                        exportFlag = true;
+                        answerYNFlag = false;
+                    }
+                    if (exportFlagString.equalsIgnoreCase("N")) {
+                        exportFlag = false;
+                        answerYNFlag = false;
+                    } else {
+                        answerYNFlag = true;
+                        System.out.println("Wrong input format. Try again.");
+                    }
+                }
+                while (answerYNFlag);
 
                 switch (i) {
                     case 1:
@@ -223,7 +163,8 @@ public class UserInterface {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input format. Try again.");
-                scan.reset();
+                errorFlag = true;
+                INT_SCAN.reset();
             } catch (CsvRequiredFieldEmptyException e) {
                 e.printStackTrace();
             } catch (IOException e) {
