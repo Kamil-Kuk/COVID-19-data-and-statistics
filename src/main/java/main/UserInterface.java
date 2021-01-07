@@ -35,6 +35,9 @@ public class UserInterface {
     private static boolean exportFlag;
     private static boolean answerYNFlag;
 
+    private static List<CovidData> output;
+    private static boolean isDrawable = true;
+
     public static void main(String[] args) throws ParseException, NullPointerException {
 
         DAO.openConnection();
@@ -146,6 +149,7 @@ public class UserInterface {
                     case 9:
                         exportData();
                         selectAllData(manager);
+                        isDrawable = false; //flag isDrawable is set to false, because it is not possible to draw a graph for multiple results
                         break;
                     default: {
                         System.out.println("No such option. Try again.");
@@ -164,7 +168,7 @@ public class UserInterface {
 
     private static void selectTotalCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -186,11 +190,12 @@ public class UserInterface {
             String filename = String.format("%s-TOTAL_CASES", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectDailyNewCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -212,11 +217,12 @@ public class UserInterface {
             String filename = String.format("%s-NEW_CASES", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectTotalDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -238,11 +244,12 @@ public class UserInterface {
             String filename = String.format("%s-TOTAL_DEATHS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectDailyNewDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -264,11 +271,12 @@ public class UserInterface {
             String filename = String.format("%s-NEW_DEATHS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectIcuPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -290,11 +298,12 @@ public class UserInterface {
             String filename = String.format("%s-ICU_PATIENTS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectHospitalizedPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -316,11 +325,12 @@ public class UserInterface {
             String filename = String.format("%s-HOSP_PATIENTS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectTotalTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -342,11 +352,12 @@ public class UserInterface {
             String filename = String.format("%s-TOTAL_TESTS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectDailyNewTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -368,11 +379,12 @@ public class UserInterface {
             String filename = String.format("%s-NEW_TESTS", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void selectAllData(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -405,6 +417,7 @@ public class UserInterface {
             String filename = String.format("%s-ALL_DATA", cdList.get(0).getCountry().toString());
             CsvWrite.writeCsvFromBean(beans, filename);
         }
+        setOutput(cdList);
     }
 
     private static void displayAvailableCountries(EntityManager manager) {
@@ -488,4 +501,15 @@ public class UserInterface {
             System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
     }
 
+    public static List<CovidData> getOutput() {
+        return output;
+    }
+
+    public static void setOutput(List<CovidData> output) {
+        UserInterface.output = output;
+    }
+
+    public static boolean isDrawable() {
+        return isDrawable;
+    }
 }
