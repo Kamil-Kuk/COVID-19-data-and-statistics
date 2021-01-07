@@ -11,8 +11,6 @@ import main.CsvWrite.*;
 import main.downloader.Downloader;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -27,28 +25,26 @@ public class UserInterface {
     private static final Scanner INT_SCAN = new Scanner(System.in);
     private static final Scanner STRING_SCAN = new Scanner(System.in);
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static COVID19DAO dao = new COVID19DAO();
-    private static final Scanner EXPORT_SCAN = new Scanner(System.in);
+    protected static COVID19DAO DAO = new COVID19DAO();
     private static String countryIso;
     private static final Date DATE_NOW = new Date();
 
     private static Date startDate;
     private static Date endDate;
-    private static boolean errorFlag;
     private static boolean dateFormatFlag;
     private static boolean exportFlag;
     private static boolean answerYNFlag;
 
     public static void main(String[] args) throws ParseException, NullPointerException {
 
-        dao.openConnection();
-        EntityManager manager = dao.getManager();
+        DAO.openConnection();
+        EntityManager manager = DAO.getManager();
         initialMethod(manager);
-        dao.closeConnection();
+        DAO.closeConnection();
     }
 
 
-    private static void initialMethod(EntityManager manager) {
+    protected static void initialMethod(EntityManager manager) {
 
         System.out.println("COVID-19: DATA AND STATISTIC");
         CsvBeanOWID bean = new CsvBeanOWID();
@@ -60,14 +56,14 @@ public class UserInterface {
                 answerYNFlag = false;
                 try {
                     Downloader.getFile();
-                    dao.buildDatabase(csvRead);
+                    DAO.buildDatabase(csvRead);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else if (answerYN.equalsIgnoreCase("n")) {
                 try {
                     answerYNFlag = false;
-                    dao.buildDatabase(csvRead);
+                    DAO.buildDatabase(csvRead);
                 } catch (NoSuchFileException e) {
                     e.printStackTrace();
                 }
@@ -82,7 +78,6 @@ public class UserInterface {
         do {
             System.out.println("Select Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                     " or press Q to end program.");
-
 
             countryIso = STRING_SCAN.next();
             if (countryIso.equalsIgnoreCase("q")) {
@@ -109,72 +104,62 @@ public class UserInterface {
                 "4.Daily number of new deaths due COVID-19\n5.Number of intensive care unit patients with SARS-Cov-2\n" +
                 "6.Number of hospitalized Patients with SARS-Cov-2\n7.Total number of tests performed\n" +
                 "8.Daily number of new tests performed\n9.Get all data");
-        errorFlag = true;
+        boolean errorFlag = true;
         do {
             try {
                 errorFlag = false;
-                int i=INT_SCAN.nextInt();
-                answerYNFlag = true;
-                do {
-                    System.out.println("Do you want to export results to .csv file? (Y/N): ");
-                    String exportFlagString = EXPORT_SCAN.nextLine();
-                    if (exportFlagString.equalsIgnoreCase("Y")) {
-                        exportFlag = true;
-                        answerYNFlag = false;
-                    }
-                    if (exportFlagString.equalsIgnoreCase("N")) {
-                        exportFlag = false;
-                        answerYNFlag = false;
-                    } else {
-                        answerYNFlag = true;
-                        System.out.println("Wrong input format. Try again.");
-                    }
-                }
-                while (answerYNFlag);
+                int i = new Scanner(System.in).nextInt();
 
                 switch (i) {
                     case 1:
+                        exportData();
                         selectTotalCases(manager);
                         break;
                     case 2:
+                        exportData();
                         selectDailyNewCases(manager);
                         break;
                     case 3:
+                        exportData();
                         selectTotalDeaths(manager);
                         break;
                     case 4:
+                        exportData();
                         selectDailyNewDeaths(manager);
                         break;
                     case 5:
+                        exportData();
                         selectIcuPatients(manager);
                         break;
                     case 6:
+                        exportData();
                         selectHospitalizedPatients(manager);
                         break;
                     case 7:
+                        exportData();
                         selectTotalTests(manager);
                         break;
                     case 8:
+                        exportData();
                         selectDailyNewTests(manager);
                         break;
                     case 9:
+                        exportData();
                         selectAllData(manager);
                         break;
+                    default: {
+                        System.out.println("No such option. Try again.");
+                        errorFlag = true;
+                    }
+                    break;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input format. Try again.");
-                errorFlag = true;
-                INT_SCAN.reset();
-            } catch (CsvRequiredFieldEmptyException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CsvDataTypeMismatchException e) {
+                errorFlag=true;
+            } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
                 e.printStackTrace();
             }
         } while (errorFlag);
-        if (exportFlag)
-            System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
     }
 
     private static void selectTotalCases(EntityManager manager) throws
@@ -445,7 +430,7 @@ public class UserInterface {
     }
 
 
-    private static Date selectStartDate(Scanner scan) {
+    private static void selectStartDate(Scanner scan) {
         dateFormatFlag = true;
         do {
             try {
@@ -459,7 +444,6 @@ public class UserInterface {
             }
         }
         while (dateFormatFlag);
-        return startDate;
     }
 
     private static void selectEndDate(Scanner scan) {
@@ -478,4 +462,30 @@ public class UserInterface {
         while (dateFormatFlag);
 
     }
+
+    private static void exportData() {
+        answerYNFlag = true;
+        do {
+            System.out.println("Do you want to export results to .csv file? (Y/N): ");
+            String exportFlagString = new Scanner(System.in).nextLine();
+            if (exportFlagString.equalsIgnoreCase("Y")) {
+                exportFlag = true;
+                answerYNFlag = false;
+                break;
+            }
+            if (exportFlagString.equalsIgnoreCase("N")) {
+                exportFlag = false;
+                answerYNFlag = false;
+                break;
+            } else {
+                answerYNFlag = true;
+                System.out.println("Wrong input format. Try again.");
+            }
+        }
+        while (answerYNFlag);
+
+        if (exportFlag)
+            System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
+    }
+
 }
