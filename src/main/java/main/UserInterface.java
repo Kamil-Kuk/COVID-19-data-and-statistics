@@ -37,6 +37,7 @@ public class UserInterface {
 
     private static List<CovidData> output;
     private static boolean isDrawable = true;
+    private static int optionInt;
 
     public static void main(String[] args) throws ParseException, NullPointerException {
 
@@ -111,9 +112,9 @@ public class UserInterface {
         do {
             try {
                 errorFlag = false;
-                int i = new Scanner(System.in).nextInt();
+                optionInt = new Scanner(System.in).nextInt();
 
-                switch (i) {
+                switch (optionInt) {
                     case 1:
                         exportData();
                         selectTotalCases(manager);
@@ -511,5 +512,9 @@ public class UserInterface {
 
     public static boolean isDrawable() {
         return isDrawable;
+    }
+
+    public static int getOptionInt() {
+        return optionInt;
     }
 }
