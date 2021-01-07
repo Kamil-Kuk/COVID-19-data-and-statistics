@@ -164,7 +164,7 @@ public class UserInterface {
 
     private static void selectTotalCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -190,7 +190,7 @@ public class UserInterface {
 
     private static void selectDailyNewCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -216,7 +216,7 @@ public class UserInterface {
 
     private static void selectTotalDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -242,7 +242,7 @@ public class UserInterface {
 
     private static void selectDailyNewDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -268,7 +268,7 @@ public class UserInterface {
 
     private static void selectIcuPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -294,7 +294,7 @@ public class UserInterface {
 
     private static void selectHospitalizedPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -320,7 +320,7 @@ public class UserInterface {
 
     private static void selectTotalTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -346,7 +346,7 @@ public class UserInterface {
 
     private static void selectDailyNewTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -372,7 +372,7 @@ public class UserInterface {
 
     private static void selectAllData(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ?", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
