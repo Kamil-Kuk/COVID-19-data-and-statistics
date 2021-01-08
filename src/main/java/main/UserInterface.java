@@ -483,17 +483,24 @@ public class UserInterface {
         while (flag);
     }
 
-    private static void selectFirstAvailableDate(EntityManager manager) {
-        String hql = "SELECT o.date FROM CovidData o WHERE o.iso_code=? order by o.date ";
-        Query qhql = manager.createQuery(hql, CovidData.class);
-        qhql.setParameter(1, countryIso);
-        try {
-            startDate = SIMPLE_DATE_FORMAT.parse(String.valueOf(qhql.getFirstResult()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static void selectFirstAvailableDate(EntityManager manager) {
+//        String hql = "SELECT o.date FROM CovidData o WHERE o.iso_code=? order by o.date ";
+//        Query qhql = manager.createQuery(hql, CovidData.class);
+//        qhql.setParameter(1, countryIso);
+//        try {
+//            startDate = SIMPLE_DATE_FORMAT.parse(String.valueOf(qhql.getFirstResult()));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
+    private static void selectFirstAvailableDate(EntityManager manager) {
+        String hql = "SELECT * FROM CovidData o WHERE o.iso_code= :isoCode order by o.date ";
+        Query qhql = manager.createNativeQuery(hql, CovidData.class);
+        qhql.setParameter("isoCode", countryIso);
+        List<CovidData> list = qhql.getResultList();
+        startDate = list.get(0).getDate();
+    }
 
     private static void selectEndDate(EntityManager manager, Scanner scan) {
         boolean flag = true;
@@ -508,10 +515,11 @@ public class UserInterface {
                     try {
                         dateFormatFlag = false;
                         do {
-                        System.out.println("Select end date: (yyyy-MM-dd)");
-                        endDate = readDate(scan);
-                        if (endDate.before(startDate)) System.out.println("Selected end date is earlier than" +
-                                " the start date. Try again");}
+                            System.out.println("Select end date: (yyyy-MM-dd)");
+                            endDate = readDate(scan);
+                            if (endDate.before(startDate)) System.out.println("Selected end date is earlier than" +
+                                    " the start date. Try again");
+                        }
                         while (endDate.before(startDate));
                     } catch (ParseException e) {
                         System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
@@ -541,6 +549,7 @@ public class UserInterface {
             e.printStackTrace();
         }
     }
+
     private static void exportData() {
         answerYNFlag = true;
         do {
