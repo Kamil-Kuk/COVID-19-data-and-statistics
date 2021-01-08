@@ -35,7 +35,7 @@ public class Main extends Application {
     }
 
     private void drawGraph(Stage stage, List<CovidData> output) {
-        if (output.size() > 0 && isDrawable()) {
+        if (output.size() > 1 && isDrawable()) {
             stage.setTitle("COVID-19 Data and statistics");
             final CategoryAxis xAxis = new CategoryAxis();
             final NumberAxis yAxis = new NumberAxis();
