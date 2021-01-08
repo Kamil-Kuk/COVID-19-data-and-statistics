@@ -94,8 +94,8 @@ public class UserInterface {
                 STRING_SCAN.reset();
             } else {
                 answerYNFlag = false;
-                selectStartDate(INT_SCAN);
-                selectEndDate(INT_SCAN);
+                selectStartDate(manager, INT_SCAN);
+                selectEndDate(manager, INT_SCAN);
                 availableOptions(manager);
             }
         }
@@ -160,7 +160,7 @@ public class UserInterface {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input format. Try again.");
-                errorFlag=true;
+                errorFlag = true;
             } catch (CsvRequiredFieldEmptyException | IOException | CsvDataTypeMismatchException e) {
                 e.printStackTrace();
             }
@@ -431,12 +431,19 @@ public class UserInterface {
         }
     }
 
-//    private static Date selectFirstAvailableDate(String countryIso){
-//        manager.getTransaction().begin();
-//        Query q = manager.createNativeQuery("SELECT MIN(o.DATE) FROM CovidData o WHERE o.ISO_CODE=?", CovidData.class);
-//        q.setParameter(1, countryIso);
-//        return (Date)q.getSingleResult();
+//    private static void displayAvailableCountries(EntityManager manager) {
+//        Query q = manager.createQuery("SELECT c.ISO_code, c.name FROM Country c", Country.class);
+//
+//
+//        Iterator<?> iterator = q.getResultList().iterator();
+//        while (iterator.hasNext()) {
+//            Object[] item = (Object[]) iterator.next();
+//            String iso_code = (String) item[0];
+//            String name = (String) item[1];
+//            System.out.println(iso_code+" | "+name);
+//        }
 //    }
+
 
     private static Date readDate(Scanner scan) throws ParseException {
         SIMPLE_DATE_FORMAT.setLenient(false);
@@ -444,39 +451,96 @@ public class UserInterface {
     }
 
 
-    private static void selectStartDate(Scanner scan) {
-        dateFormatFlag = true;
+    private static void selectStartDate(EntityManager manager, Scanner scan) {
+        boolean flag = true;
         do {
-            try {
-                dateFormatFlag = false;
-                System.out.println("Select start date: (yyyy-MM-dd)");
-                startDate = readDate(scan);
-            } catch (ParseException e) {
-                System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
+            System.out.println("Type A if you want to select start date manually or type B to get first available date for " +
+                    "selected Country.");
+            String chooseAnswer = new Scanner(System.in).next();
+            if (chooseAnswer.equalsIgnoreCase("A")) {
+                flag = false;
                 dateFormatFlag = true;
-                scan.reset();
+                do {
+                    try {
+                        dateFormatFlag = false;
+                        System.out.println("Select start date: (yyyy-MM-dd)");
+                        startDate = readDate(scan);
+                    } catch (ParseException e) {
+                        System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
+                        dateFormatFlag = true;
+                        scan.reset();
+                    }
+                }
+                while (dateFormatFlag);
+            } else if (chooseAnswer.equalsIgnoreCase("B")) {
+                flag = false;
+                selectFirstAvailableDate(manager);
+            } else {
+                System.out.println("No such option. Try again.");
+                flag = true;
             }
         }
-        while (dateFormatFlag);
+        while (flag);
     }
 
-    private static void selectEndDate(Scanner scan) {
-        dateFormatFlag = true;
+    private static void selectFirstAvailableDate(EntityManager manager) {
+        String hql = "SELECT o.date FROM CovidData o WHERE o.iso_code=? order by o.date ";
+        Query qhql = manager.createQuery(hql, CovidData.class);
+        qhql.setParameter(1, countryIso);
+        try {
+            startDate = SIMPLE_DATE_FORMAT.parse(String.valueOf(qhql.getFirstResult()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void selectEndDate(EntityManager manager, Scanner scan) {
+        boolean flag = true;
         do {
-            try {
-                dateFormatFlag = false;
-                System.out.println("Select end date: (yyyy-MM-dd)");
-                endDate = readDate(scan);
-            } catch (ParseException e) {
-                System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
+            System.out.println("Type A if you want to select end date manually or type B to get last available date for " +
+                    "selected Country.");
+            String chooseAnswer = new Scanner(System.in).next();
+            if (chooseAnswer.equalsIgnoreCase("A")) {
+                flag = false;
                 dateFormatFlag = true;
-                scan.reset();
+                do {
+                    try {
+                        dateFormatFlag = false;
+                        do {
+                        System.out.println("Select end date: (yyyy-MM-dd)");
+                        endDate = readDate(scan);
+                        if (endDate.before(startDate)) System.out.println("Selected end date is earlier than" +
+                                " the start date. Try again");}
+                        while (endDate.before(startDate));
+                    } catch (ParseException e) {
+                        System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
+                        dateFormatFlag = true;
+                        scan.reset();
+                    }
+                }
+                while (dateFormatFlag);
+            } else if (chooseAnswer.equalsIgnoreCase("B")) {
+                flag = false;
+                selectLastAvailableDate(manager);
+            } else {
+                System.out.println("No such option. Try again.");
+                flag = true;
             }
         }
-        while (dateFormatFlag);
-
+        while (flag);
     }
 
+    private static void selectLastAvailableDate(EntityManager manager) {
+        String hql = "SELECT o.date FROM CovidData o WHERE o.iso_code=? order by o.date desc ";
+        Query qhql = manager.createQuery(hql, CovidData.class);
+        qhql.setParameter(1, countryIso);
+        try {
+            startDate = SIMPLE_DATE_FORMAT.parse(String.valueOf(qhql.getFirstResult()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
     private static void exportData() {
         answerYNFlag = true;
         do {
