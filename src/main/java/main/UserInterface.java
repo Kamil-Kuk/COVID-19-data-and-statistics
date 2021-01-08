@@ -40,15 +40,6 @@ public class UserInterface {
     private static boolean isDrawable = true;
     private static int optionInt;
 
-    public static void main(String[] args) throws ParseException, NullPointerException {
-
-        DAO.openConnection();
-        EntityManager manager = DAO.getManager();
-        initialMethod(manager);
-        DAO.closeConnection();
-    }
-
-
     protected static void initialMethod(EntityManager manager) {
 
         System.out.println("--------------COVID-19: DATA AND STATISTIC--------------");
@@ -100,12 +91,11 @@ public class UserInterface {
             if (countryIso.equalsIgnoreCase("q")) {
                 answerYNFlag = false;
                 System.exit(0);
-            }
-            else if (countryIso.equalsIgnoreCase("h")) {
+            } else if (countryIso.equalsIgnoreCase("h")) {
                 answerYNFlag = true;
                 displayAvailableCountries(manager);
                 STRING_SCAN.reset();
-            } else if(validateCountry(manager)){
+            } else if (validateCountry(manager)) {
                 answerYNFlag = false;
                 selectStartDate(manager);
                 selectEndDate(manager);
@@ -456,19 +446,6 @@ public class UserInterface {
         return qhql.getResultList().size() == 1;
     }
 
-//    private static void displayAvailableCountries(EntityManager manager) {
-//        Query q = manager.createQuery("SELECT c.ISO_code, c.name FROM Country c", Country.class);
-//
-//
-//        Iterator<?> iterator = q.getResultList().iterator();
-//        while (iterator.hasNext()) {
-//            Object[] item = (Object[]) iterator.next();
-//            String iso_code = (String) item[0];
-//            String name = (String) item[1];
-//            System.out.println(iso_code+" | "+name);
-//        }
-//    }
-
 
     private static Date readDate(Scanner scan) throws ParseException {
         SIMPLE_DATE_FORMAT.setLenient(false);
@@ -542,43 +519,6 @@ public class UserInterface {
         }
         while (dateFormatFlag);
     }
-
-//    private static void selectEndDate(EntityManager manager, Scanner scan) {
-//        boolean flag = true;
-//        do {
-//            System.out.println("Type A if you want to select end date manually or type B to get last available date for " +
-//                    "selected Country.");
-//            String chooseAnswer = new Scanner(System.in).next();
-//            if (chooseAnswer.equalsIgnoreCase("A")) {
-//                flag = false;
-//                dateFormatFlag = true;
-//                do {
-//                    try {
-//                        dateFormatFlag = false;
-//                        do {
-//                            System.out.println("Select end date: (yyyy-MM-dd)");
-//                            endDate = readDate(scan);
-//                            if (endDate.before(startDate)) System.out.println("Selected end date is earlier than" +
-//                                    " the start date. Try again");
-//                        }
-//                        while (endDate.before(startDate));
-//                    } catch (ParseException e) {
-//                        System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
-//                        dateFormatFlag = true;
-//                        scan.reset();
-//                    }
-//                }
-//                while (dateFormatFlag);
-//            } else if (chooseAnswer.equalsIgnoreCase("B")) {
-//                flag = false;
-//                selectLastAvailableDate(manager);
-//            } else {
-//                System.out.println("No such option. Try again.");
-//                flag = true;
-//            }
-//        }
-//        while (flag);
-//    }
 
     private static void selectLastAvailableDate(EntityManager manager) {
         String hql = "SELECT * FROM CovidData o WHERE o.iso_code= :isoCode order by o.date DESC";
