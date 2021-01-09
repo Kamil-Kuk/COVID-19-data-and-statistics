@@ -49,7 +49,7 @@ public class UserInterface {
         //downloading latest data from the OWID server
         do {
             System.out.println("Do you want to download/update .csv file from 'Our World In Data' database? (Y/N)");
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             String answerYN = STRING_SCAN.next();
             if (answerYN.equalsIgnoreCase("y")) {
                 try {
@@ -85,7 +85,7 @@ public class UserInterface {
             System.out.println("\nSelect Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                     " or press Q to end program.");
 
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             countryIso = STRING_SCAN.next();
 
             if (countryIso.equalsIgnoreCase("q")) {
@@ -119,7 +119,7 @@ public class UserInterface {
         do {
             try {
                 errorFlag = false;
-                System.out.print(">>> ");
+                System.out.println(">>> ");
                 optionInt = new Scanner(System.in).nextInt();
 
                 switch (optionInt) {
@@ -231,7 +231,7 @@ public class UserInterface {
 
     private static void selectTotalDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.total_deaths FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -459,7 +459,7 @@ public class UserInterface {
             System.out.println("\nSelect start date.");
             System.out.println("Type 'start' to get first available date for " +
                     countryIso.toUpperCase() + " or type specific date (yyyy-MM-dd): ");
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             String input = new Scanner(System.in).next();
             Matcher matcher = pattern.matcher(input);
             dateFormatFlag = true;
@@ -497,7 +497,7 @@ public class UserInterface {
             System.out.println("\nSelect end date.");
             System.out.println("Type 'end' to get the last available date for " +
                     countryIso.toUpperCase() + " or type specific date (yyyy-MM-dd): ");
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             String input = new Scanner(System.in).next();
             Matcher matcher = pattern.matcher(input);
             dateFormatFlag = true;
@@ -532,7 +532,7 @@ public class UserInterface {
         answerYNFlag = true;
         do {
             System.out.println("\nDo you want to export results to .csv file? (Y/N): ");
-            System.out.print(">>>");
+            System.out.println(">>>");
             String exportFlagString = new Scanner(System.in).nextLine();
             if (exportFlagString.equalsIgnoreCase("Y")) {
                 exportFlag = true;
