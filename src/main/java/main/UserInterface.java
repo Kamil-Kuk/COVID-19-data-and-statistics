@@ -28,25 +28,14 @@ public class UserInterface {
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     protected static COVID19DAO DAO = new COVID19DAO();
     private static String countryIso;
-    private static final Date DATE_NOW = new Date();
-
     private static Date startDate;
     private static Date endDate;
+    private static List<CovidData> output;
+    private static int optionInt;
     private static boolean dateFormatFlag;
     private static boolean exportFlag;
     private static boolean answerYNFlag;
-
-    private static List<CovidData> output;
     private static boolean isDrawable = true;
-    private static int optionInt;
-
-    public static void main(String[] args) throws ParseException, NullPointerException {
-
-        DAO.openConnection();
-        EntityManager manager = DAO.getManager();
-        initialMethod(manager);
-        DAO.closeConnection();
-    }
 
 
     protected static void initialMethod(EntityManager manager) {
@@ -187,7 +176,8 @@ public class UserInterface {
 
     private static void selectTotalCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.total_cases FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.total_cases IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -214,7 +204,8 @@ public class UserInterface {
 
     private static void selectDailyNewCases(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.daily_new_cases FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.daily_new_cases IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -241,7 +232,9 @@ public class UserInterface {
 
     private static void selectTotalDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.total_deaths FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.total_deaths IS NOT NULL ORDER BY o.DATE",
+                CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -268,7 +261,8 @@ public class UserInterface {
 
     private static void selectDailyNewDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.daily_new_deaths FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.daily_new_deaths IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -295,7 +289,8 @@ public class UserInterface {
 
     private static void selectIcuPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.icu_patients FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.icu_patients IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -322,7 +317,8 @@ public class UserInterface {
 
     private static void selectHospitalizedPatients(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.HOSPITALIZED_PATIENTS FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.HOSPITALIZED_PATIENTS IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -349,7 +345,8 @@ public class UserInterface {
 
     private static void selectTotalTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.total_tests FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.total_tests IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -376,7 +373,8 @@ public class UserInterface {
 
     private static void selectDailyNewTests(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
-        Query q = manager.createNativeQuery("SELECT * FROM CovidData o WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? ORDER BY o.DATE", CovidData.class);
+        Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.DAILY_NEW_TESTS FROM CovidData o " +
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.DAILY_NEW_TESTS IS NOT NULL ORDER BY o.DATE", CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
         q.setParameter(3, endDate);
@@ -456,24 +454,11 @@ public class UserInterface {
         return qhql.getResultList().size() == 1;
     }
 
-//    private static void displayAvailableCountries(EntityManager manager) {
-//        Query q = manager.createQuery("SELECT c.ISO_code, c.name FROM Country c", Country.class);
-//
-//
-//        Iterator<?> iterator = q.getResultList().iterator();
-//        while (iterator.hasNext()) {
-//            Object[] item = (Object[]) iterator.next();
-//            String iso_code = (String) item[0];
-//            String name = (String) item[1];
-//            System.out.println(iso_code+" | "+name);
-//        }
+
+//    private static Date readDate(Scanner scan) throws ParseException {
+//        SIMPLE_DATE_FORMAT.setLenient(false);
+//        return SIMPLE_DATE_FORMAT.parse(scan.next());
 //    }
-
-
-    private static Date readDate(Scanner scan) throws ParseException {
-        SIMPLE_DATE_FORMAT.setLenient(false);
-        return SIMPLE_DATE_FORMAT.parse(scan.next());
-    }
 
 
     private static void selectStartDate(EntityManager manager) {
@@ -521,64 +506,34 @@ public class UserInterface {
             System.out.println("Type 'end' to get the last available date for " +
                     countryIso.toUpperCase() + " or type specific date (yyyy-MM-dd): ");
             System.out.print(">>> ");
-            String input = new Scanner(System.in).next();
-            Matcher matcher = pattern.matcher(input);
-            dateFormatFlag = true;
 
-            if (matcher.matches()) {
-                try {
-                    endDate = SIMPLE_DATE_FORMAT.parse(input);
+                String input = new Scanner(System.in).next();
+                Matcher matcher = pattern.matcher(input);
+                dateFormatFlag = true;
+
+                if (matcher.matches()) {
+                    try {
+                        endDate = SIMPLE_DATE_FORMAT.parse(input);
+                        dateFormatFlag = false;
+                        if (endDate.before(startDate)){
+                            System.out.println("Selected end date is earlier than" +
+                                    " the start date. Try again.");
+                        }
+                    } catch (ParseException e) {
+                        System.out.println("Wrong input. Try again.");
+                        dateFormatFlag = true;
+                    }
+                } else if (input.equalsIgnoreCase("end")) {
+                    selectLastAvailableDate(manager);
                     dateFormatFlag = false;
-                } catch (ParseException e) {
+                } else {
                     System.out.println("Wrong input. Try again.");
-                    dateFormatFlag = true;
                 }
-            } else if (input.equalsIgnoreCase("end")) {
-                selectLastAvailableDate(manager);
-                dateFormatFlag = false;
-            } else {
-                System.out.println("Wrong input. Try again.");
+
             }
-        }
-        while (dateFormatFlag);
+        while (dateFormatFlag||endDate.before(startDate));
     }
 
-//    private static void selectEndDate(EntityManager manager, Scanner scan) {
-//        boolean flag = true;
-//        do {
-//            System.out.println("Type A if you want to select end date manually or type B to get last available date for " +
-//                    "selected Country.");
-//            String chooseAnswer = new Scanner(System.in).next();
-//            if (chooseAnswer.equalsIgnoreCase("A")) {
-//                flag = false;
-//                dateFormatFlag = true;
-//                do {
-//                    try {
-//                        dateFormatFlag = false;
-//                        do {
-//                            System.out.println("Select end date: (yyyy-MM-dd)");
-//                            endDate = readDate(scan);
-//                            if (endDate.before(startDate)) System.out.println("Selected end date is earlier than" +
-//                                    " the start date. Try again");
-//                        }
-//                        while (endDate.before(startDate));
-//                    } catch (ParseException e) {
-//                        System.out.println("Wrong date format (yyyy-MM-dd). Try again.");
-//                        dateFormatFlag = true;
-//                        scan.reset();
-//                    }
-//                }
-//                while (dateFormatFlag);
-//            } else if (chooseAnswer.equalsIgnoreCase("B")) {
-//                flag = false;
-//                selectLastAvailableDate(manager);
-//            } else {
-//                System.out.println("No such option. Try again.");
-//                flag = true;
-//            }
-//        }
-//        while (flag);
-//    }
 
     private static void selectLastAvailableDate(EntityManager manager) {
         String hql = "SELECT * FROM CovidData o WHERE o.iso_code= :isoCode order by o.date DESC";
