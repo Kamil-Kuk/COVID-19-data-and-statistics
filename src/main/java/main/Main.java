@@ -79,7 +79,7 @@ public class Main extends Application {
             stage.show();
 
         } else {
-            System.out.println("Cannot draw graph for this query");
+            System.out.println("Cannot draw graph for this query.");
             System.exit(0);
         }
     }
