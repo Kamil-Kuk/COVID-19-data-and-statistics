@@ -10,7 +10,7 @@
 This is a repository for a project COVID-19-data and statistics written for Java course. It allow the user to display on charts
 various statistics related with Covid-19 pandemic ex. the number of deaths due SARS-CoV-2 in given country in given period of time.
 
-![Screenshot](./screenshot.png)
+<img src="https://github.com/Kamil-Kuk/COVID-19-data-and-statistics/blob/master/screenshot.PNG" width="600px" style="max-width:100%;">
 <br>
 Data is collected from 'Our World in Data' repository (https://github.com/owid/covid-19-data/tree/master/public/data/)
 <h2>Technologies</h2>
