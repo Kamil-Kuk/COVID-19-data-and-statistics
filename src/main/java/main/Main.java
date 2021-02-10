@@ -84,27 +84,6 @@ public class Main extends Application {
         }
     }
 
-//    private Field getResultType(List<CovidData> output) throws NoSuchFieldException {
-//        //TODO -refactor this method
-//        if(output.get(0).getTotal_cases() != null){
-//            return output.get(0).getClass().getDeclaredField("total_cases");
-//        } else if(output.get(0).getNew_cases() != null){
-//            return output.get(0).getClass().getDeclaredField("new_cases");
-//        } else if(output.get(0).getTotal_deaths() != null){
-//            return output.get(0).getClass().getDeclaredField("total_deaths");
-//        } else if(output.get(0).getNew_deaths() != null){
-//            return output.get(0).getClass().getDeclaredField("new_deaths");
-//        } else if(output.get(0).getIcu_patients() != null){
-//            return output.get(0).getClass().getDeclaredField("icu_patients");
-//        } else if(output.get(0).getHosp_patients() != null){
-//            return output.get(0).getClass().getDeclaredField("hosp_patients");
-//        } else if(output.get(0).getTotal_tests() != null){
-//            return output.get(0).getClass().getDeclaredField("total_tests");
-//        } else if(output.get(0).getNew_cases() != null){
-//            return output.get(0).getClass().getDeclaredField("new_tests");
-//        }
-//        return null;
-//    }
 
     private Field getResultType(List<CovidData> output) throws NoSuchFieldException {
         switch (getOptionInt()) {

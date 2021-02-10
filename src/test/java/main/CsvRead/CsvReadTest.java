@@ -43,25 +43,7 @@ class CsvReadTest {
         //then
         Assertions.assertEquals(result.get(0), testBean);
     }
-/*
-    @Test
-    void shouldGetValidData1000thEntry() {
-        //given
-        CsvRead csvRead = new CsvRead(new CsvBeanOWID());
-        List<CsvBeanOWID> result = csvRead.getBeanFromCSV();
-        CsvBeanOWID testBean = new CsvBeanOWID();
 
-        //when
-        testBean.setISO_Code("AND");
-        testBean.setContinent("Europe");
-        testBean.setLocation("Andorra");
-        testBean.setDate("2020-02-19");
-        testBean.setTotal_Cases("0");
-
-        //then
-        Assertions.assertEquals(result.get(1000-1), testBean);
-    }
-*/
     @Test
     void shouldGetValidDataLastEntry() {
         //given

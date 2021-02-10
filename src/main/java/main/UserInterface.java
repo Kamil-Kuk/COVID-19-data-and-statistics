@@ -463,13 +463,6 @@ public class UserInterface {
         return qhql.getResultList().size() == 1;
     }
 
-
-//    private static Date readDate(Scanner scan) throws ParseException {
-//        SIMPLE_DATE_FORMAT.setLenient(false);
-//        return SIMPLE_DATE_FORMAT.parse(scan.next());
-//    }
-
-
     private static void selectStartDate(EntityManager manager) {
         Pattern pattern = Pattern.compile("20[0-9]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])");
         do {

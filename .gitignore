@@ -6,3 +6,5 @@
 !/src/main/resources/META-INF/persistence.xml
 !/src/main/java/main/Main.java
 /covid.xlsx
+.idea/**
+*.iml
