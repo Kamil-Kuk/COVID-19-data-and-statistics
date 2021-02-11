@@ -34,7 +34,6 @@ public class UserInterface {
     private static int optionInt;
     private static boolean dateFormatFlag;
     private static boolean exportFlag;
-    private static boolean saveFlag = false;
     private static boolean answerYNFlag;
     private static boolean isDrawable = true;
 
@@ -48,7 +47,7 @@ public class UserInterface {
         //downloading latest data from the OWID server
         do {
             System.out.println("Do you want to download/update .csv file from 'Our World In Data' database? (Y/N)");
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             String answerYN = STRING_SCAN.next();
             if (answerYN.equalsIgnoreCase("y")) {
                 try {
@@ -84,7 +83,7 @@ public class UserInterface {
             System.out.println("\nSelect Country (name by ISO CODE eg. POL for Poland). Press H for list of ISO_CODES" +
                     " or press Q to end program.");
 
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             countryIso = STRING_SCAN.next();
 
             if (countryIso.equalsIgnoreCase("q")) {
@@ -118,7 +117,7 @@ public class UserInterface {
         do {
             try {
                 errorFlag = false;
-                System.out.print(">>> ");
+                System.out.println(">>> ");
                 optionInt = new Scanner(System.in).nextInt();
 
                 switch (optionInt) {
@@ -188,8 +187,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | total_cases: " + covidData.getTotal_cases() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanTotalCases bean = new CsvBeanTotalCases();
@@ -217,8 +215,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | daily_new_cases: " + covidData.getNew_cases() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanNewCases bean = new CsvBeanNewCases();
@@ -235,7 +232,7 @@ public class UserInterface {
     private static void selectTotalDeaths(EntityManager manager) throws
             CsvRequiredFieldEmptyException, IOException, CsvDataTypeMismatchException {
         Query q = manager.createNativeQuery("SELECT o.id, o.date, o.iso_code, o.total_deaths FROM CovidData o " +
-                        "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.total_deaths IS NOT NULL ORDER BY o.DATE",
+                "WHERE o.ISO_CODE=? AND o.date BETWEEN ? AND ? AND o.total_deaths IS NOT NULL ORDER BY o.DATE",
                 CovidData.class);
         q.setParameter(1, countryIso);
         q.setParameter(2, startDate);
@@ -247,8 +244,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | total_deaths: " + covidData.getTotal_deaths() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanTotalDeaths bean = new CsvBeanTotalDeaths();
@@ -276,8 +272,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | daily_new_deaths: " + covidData.getNew_deaths() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanNewDeaths bean = new CsvBeanNewDeaths();
@@ -305,8 +300,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | ICU Patients: " + covidData.getIcu_patients() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanIcuPatients bean = new CsvBeanIcuPatients();
@@ -334,8 +328,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Hospitalized Patients: " + covidData.getHosp_patients() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanHospPatients bean = new CsvBeanHospPatients();
@@ -363,8 +356,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Total tests: " + covidData.getTotal_tests() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanTotalTests bean = new CsvBeanTotalTests();
@@ -392,8 +384,7 @@ public class UserInterface {
             System.out.print(" | iso_code: " + covidData.getCountry());
             System.out.println(" | Daily new tests: " + covidData.getNew_tests() + " |");
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanNewTests bean = new CsvBeanNewTests();
@@ -424,8 +415,7 @@ public class UserInterface {
                     covidData.getTotal_deaths(), covidData.getNew_deaths(), covidData.getIcu_patients(),
                     covidData.getHosp_patients(), covidData.getTotal_tests(), covidData.getNew_tests());
         }
-        if (q.getResultList().size() > 0) saveFlag = true;
-        if (exportFlag && saveFlag) {
+        if (exportFlag) {
             List<CsvBean> beans = new ArrayList<>();
             for (CovidData covidData : cdList) {
                 CsvBeanAllData bean = new CsvBeanAllData();
@@ -469,7 +459,7 @@ public class UserInterface {
             System.out.println("\nSelect start date.");
             System.out.println("Type 'start' to get first available date for " +
                     countryIso.toUpperCase() + " or type specific date (yyyy-MM-dd): ");
-            System.out.print(">>> ");
+            System.out.println(">>> ");
             String input = new Scanner(System.in).next();
             Matcher matcher = pattern.matcher(input);
             dateFormatFlag = true;
@@ -507,33 +497,32 @@ public class UserInterface {
             System.out.println("\nSelect end date.");
             System.out.println("Type 'end' to get the last available date for " +
                     countryIso.toUpperCase() + " or type specific date (yyyy-MM-dd): ");
-            System.out.print(">>> ");
-
+            System.out.println(">>> ");
             String input = new Scanner(System.in).next();
             Matcher matcher = pattern.matcher(input);
             dateFormatFlag = true;
 
-            if (matcher.matches()) {
-                try {
-                    endDate = SIMPLE_DATE_FORMAT.parse(input);
-                    dateFormatFlag = false;
-                    if (endDate.before(startDate)) {
-                        System.out.println("Selected end date is earlier than" +
-                                " the start date. Try again.");
+                if (matcher.matches()) {
+                    try {
+                        endDate = SIMPLE_DATE_FORMAT.parse(input);
+                        dateFormatFlag = false;
+                        if (endDate.before(startDate)){
+                            System.out.println("Selected end date is earlier than" +
+                                    " the start date. Try again.");
+                        }
+                    } catch (ParseException e) {
+                        System.out.println("Wrong input. Try again.");
+                        dateFormatFlag = true;
                     }
-                } catch (ParseException e) {
+                } else if (input.equalsIgnoreCase("end")) {
+                    selectLastAvailableDate(manager);
+                    dateFormatFlag = false;
+                } else {
                     System.out.println("Wrong input. Try again.");
-                    dateFormatFlag = true;
                 }
-            } else if (input.equalsIgnoreCase("end")) {
-                selectLastAvailableDate(manager);
-                dateFormatFlag = false;
-            } else {
-                System.out.println("Wrong input. Try again.");
-            }
 
-        }
-        while (dateFormatFlag || endDate.before(startDate));
+            }
+        while (dateFormatFlag||endDate.before(startDate));
     }
 
 
@@ -549,7 +538,7 @@ public class UserInterface {
         answerYNFlag = true;
         do {
             System.out.println("\nDo you want to export results to .csv file? (Y/N): ");
-            System.out.print(">>>");
+            System.out.println(">>>");
             String exportFlagString = new Scanner(System.in).nextLine();
             if (exportFlagString.equalsIgnoreCase("Y")) {
                 exportFlag = true;
@@ -566,9 +555,8 @@ public class UserInterface {
             }
         }
         while (answerYNFlag);
-        if (!saveFlag)
-            System.out.println("Cannot save results - no available data for selected range of time.y");
-        else if (exportFlag)
+
+        if (exportFlag)
             System.out.println("Results saved in ...\\COVID-19-data-and-statistics\\src\\main\\export\\");
     }
 
